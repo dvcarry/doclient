@@ -1,0 +1,14 @@
+.sidebaritem {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.sidebaritem:hover {
+    font-weight: 700;
+}
+
+.active {
+    background-color: white;
+}

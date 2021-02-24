@@ -1,8 +1,17 @@
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import taskReducer from './taskReducer'
+
+
+// export default configureStore({
+//   reducer: {
+//     counter: tas,
+//   },
+// });
 
 export default configureStore({
   reducer: {
-    counter: counterReducer,
+    state: taskReducer
   },
+  middleware: getDefaultMiddleware(),
+  devTools: process.env.NODE_ENV !== 'production', // по необходимости
 });

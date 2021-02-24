@@ -1,0 +1,11 @@
+.docheck {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 1px solid lightgray;
+    margin-right: 15px;
+}
+
+.do:hover {
+    border: 1px solid #f06c34;
+}

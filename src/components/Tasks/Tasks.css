@@ -1,0 +1,27 @@
+
+
+
+.tasks_filter {
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tasks_filter_item {
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.active {
+    font-weight: 700;
+    background-color: transparent;
+}
+
+ul {
+    margin-left: 0; 
+    padding-left: 0;
+}
+
+li {
+    list-style-type: none;
+}

@@ -1,0 +1,33 @@
+.subtask {
+    padding: 5px 10px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.subtask_input {
+    width: 100%;
+    border: none;
+    outline: none;
+}
+
+.subtask_info {
+    display: flex;
+    align-items: center;
+}
+
+.subtask_go {
+    cursor: pointer;
+    padding-left: 15px;
+}
+
+.subtask_go:hover {
+    color: #f06c34;
+
+}
+
+.subtask_plan {
+    font-size: 8px;
+}

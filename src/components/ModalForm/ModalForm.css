@@ -1,0 +1,45 @@
+.input_name {
+    outline: none;
+    border: none;
+    font-size: 20px;
+    font-weight: 700;
+    width: 100%;
+    resize: none;
+    overflow-y: hidden;
+}
+
+.input_div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.button_block {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.subtask_block {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.subtask_button {
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: 700;
+    color: #f06c34;
+}
+
+.flex {
+    display: flex;
+    margin-bottom: 40px;
+    align-items: center;
+}
+
+.button_block {
+    margin-top: 30px;
+}

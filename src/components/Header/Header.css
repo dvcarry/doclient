@@ -1,0 +1,9 @@
+.header {
+    display: flex;
+    height: 70px;
+    background-color: #c5ccd4;
+    justify-content: space-between;
+    /* background: linear-gradient(90deg, rgba(247,163,120,1) 0%, rgba(251,201,128,1) 100%); */
+    align-items: center;
+    padding: 40px;
+}

@@ -1,57 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React, { useEffect } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { getTasksThunk, selectTasks, setModal } from './app/taskReducer'
+import { Plan } from './routes/Plan';
+import { Focus } from './routes/Focus';
+import { ModalForm } from './components/ModalForm/ModalForm';
+
+import 'antd/dist/antd.css';
+import { HotKeys, GlobalHotKeys } from 'react-hotkeys';
+import { CURRENT_TASK } from './config/domain';
 
 function App() {
+
+  const dispatch = useDispatch()
+
+  const { plan } = useSelector(selectTasks)
+
+  useEffect(() => {
+    dispatch(getTasksThunk())
+  }, [plan])
+
+  const keyMap = {
+    MOVE_UP: "ctrl+enter"
+  };
+
+  const handlers = {
+    MOVE_UP: event => dispatch(setModal({ typeOfModal: 'new', currentTask: CURRENT_TASK }))
+  };
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <GlobalHotKeys keyMap={keyMap} handlers={handlers}>
+      <Switch>
+        <Route exact path='/' component={Plan} />
+        <Route path='/focus' component={Focus} />
+      </Switch>
+      <ModalForm />
+    </GlobalHotKeys>
   );
 }
 

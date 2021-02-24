@@ -1,0 +1,19 @@
+.action {
+    display: flex;
+    width: 20px;
+    height: 100%;    
+    margin-right: 10px;
+}
+
+.do {
+    background-color: #f06c34;
+}
+.go {
+    background-color: green;
+}
+.wait {
+    background-color: gray;
+}
+.call {
+    background-color: blue;
+}
