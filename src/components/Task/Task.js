@@ -28,13 +28,17 @@ export const Task = ({ value }) => {
         classes.push('goal')
     }
 
+    if (value.type === 'проект') {
+        classes.push('project')
+    }
+
     let dateClasses = ['task_tag']
     if (moment(today).isSame(new Date(value.date), 'day')) {
         dateClasses.push('day_today')
-    }    
+    }
     if (moment(today).isAfter(new Date(value.date), 'day')) {
         dateClasses.push('day_yesterday')
-    }    
+    }
 
     return (
         <div
@@ -60,7 +64,9 @@ export const Task = ({ value }) => {
                             ? <span className='task_children'>
                                 {`<  ${value.childname}`}
                             </span>
-                            : null
+                            : value.isparent
+                                ? <span className='task_children'>{' >'}</span>
+                                : null
                     }
                 </div>
             </div>

@@ -60,4 +60,20 @@ export const API = {
             console.log(error)
         }
     },
+    async getTodayPlan() {
+        try {
+            const { data } = await axios.get('days')
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async addTodayPlan() {
+        try {
+            const { data } = await axios.post('days')
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    },
 }

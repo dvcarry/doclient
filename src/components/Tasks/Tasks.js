@@ -26,7 +26,7 @@ export const Tasks = ({
 
     const [tasks, setTasks] = useState(planTasks);
     const [filter, setFilter] = useState(taskFilter[0])
-    const [parentFilter, setParentFilter] = useState(true)
+    // const [parentFilter, setParentFilter] = useState(true)
 
     const sortHandler = async ({ oldIndex, newIndex }) => {
         setTasks(tasks => arrayMove(tasks, oldIndex, newIndex))
@@ -37,12 +37,11 @@ export const Tasks = ({
     if (filter !== taskFilter[0]) {
         console.log('filter')
         currentTasks = currentTasks.filter(task => task.type === filter)
-        console.log("🚀 ~ file: Tasks.js ~ line 42 ~ currentTasks", currentTasks)
     }
 
-    if (parentFilter) {
-        currentTasks = currentTasks.filter(task => !task.isparent)
-    }
+    // if (parentFilter) {
+    //     currentTasks = currentTasks.filter(task => !task.isparent)
+    // }
 
     useEffect(() => {
         setTasks(planTasks)
@@ -71,7 +70,12 @@ export const Tasks = ({
                         })
                     }
                 </div>
-                <Switch defaultChecked onChange={() => setParentFilter(!parentFilter)} />
+                {/* <Switch
+                    defaultChecked
+                    onChange={() => setParentFilter(!parentFilter)}
+                    checkedChildren="Без родителей" 
+                    unCheckedChildren="С родителями"
+                /> */}
 
             </div>
             <SortableContainer
@@ -79,7 +83,11 @@ export const Tasks = ({
                 useDragHandle
             >
                 {currentTasks.map((task, index) => (
-                    <Task key={task.id} index={index} value={task} />
+                    <Task
+                        key={task.id}
+                        index={index}
+                        value={task}
+                    />
                 ))}
             </SortableContainer>
 

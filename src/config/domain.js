@@ -1,4 +1,4 @@
-export const taskFilter = ['все', "задача", "привычка", "другое"]
+export const taskFilter = ['все', "задача", "проект", "привычка", "другое"]
 
 export const RELAX_FOR_HOUR = 10
 

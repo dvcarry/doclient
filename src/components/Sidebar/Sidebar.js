@@ -9,8 +9,16 @@ const plans = ['inbox', 'today', 'upcoming', 'later', 'done']
 
 export const Sidebar = () => {
 
-    const { plan, tasks } = useSelector(selectTasks)
+    const { plan, tasks, search } = useSelector(selectTasks)
+    console.log("🚀 ~ file: Sidebar.js ~ line 13 ~ Sidebar ~ search", search)
     const dispatch = useDispatch()
+
+    let currentTask = tasks
+
+    if (search !== '') {
+        currentTask = tasks.filter(task => task.name.toLowerCase().includes(search.toLowerCase()) )
+    }
+    
 
     return (
         <div className='sidebar'>
@@ -21,7 +29,7 @@ export const Sidebar = () => {
                 {
                     plans.map(item => {
 
-                        const amount = tasks.filter(task => task.plan === item).length
+                        const amount = currentTask.filter(task => task.plan === item).length
 
                         return (
                             <SidebarItem
@@ -40,7 +48,7 @@ export const Sidebar = () => {
                 {
                     BALANCE.map(item => {
 
-                        const amount = tasks.filter(task => task.balance === item).length
+                        const amount = currentTask.filter(task => task.balance === item && task.plan !== 'done').length
 
                         return (
                             <SidebarItem

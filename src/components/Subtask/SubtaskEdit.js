@@ -7,7 +7,7 @@ import { CURRENT_TASK } from '../../config/domain';
 import './Subtask.css'
 
 
-export const SubtaskEdit = ({ name = '', close, goal, balance, child }) => {
+export const SubtaskEdit = ({ name = '', close, goal, balance, child, plan }) => {
 
     const [input, setInput] = useState(name)
 
@@ -15,7 +15,7 @@ export const SubtaskEdit = ({ name = '', close, goal, balance, child }) => {
 
     const saveKeyHandler = event => {
         if (event.charCode === 13) {
-            dispatch(addSubtaskThunk({...CURRENT_TASK, goal: goal, balance: balance, child: child, name: input}))
+            dispatch(addSubtaskThunk({...CURRENT_TASK, goal: goal, balance: balance, child: child, name: input, plan: plan}))
             close()
         }
     }

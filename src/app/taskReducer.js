@@ -13,7 +13,10 @@ export const tasksSlice = createSlice({
         filtertype: 'plan',
         currentTask: null,
         modalIsOpen: false,
-        typeOfModal: 'new'
+        typeOfModal: 'new',
+        date: '',
+        isplan: false,
+        search: ''
     },
     reducers: {
         toggleFetching: state => {
@@ -45,9 +48,9 @@ export const tasksSlice = createSlice({
             state.doneTasks = [...state.doneTasks, { ...doneTask, done: true, plan: 'done' }]
 
 
-            // открыть родителя если это была последняя подзадача
+            // открыть родителя если это была подзадача
             const parentTask = state.tasks.find(task => task.id === doneTask.child)
-            if (parentTask && state.tasks.filter(task => task.done === false && task.child === parentTask.id).length === 0) {
+            if (parentTask) {
                 state.modalIsOpen = true
                 state.typeOfModal = 'edit'
                 const subtasks = state.tasks.filter(task => task.child === parentTask.id && !task.done)
@@ -55,6 +58,15 @@ export const tasksSlice = createSlice({
             } else {
                 state.modalIsOpen = false
             }
+            // const parentTask = state.tasks.find(task => task.id === doneTask.child)
+            // if (parentTask && state.tasks.filter(task => task.done === false && task.child === parentTask.id).length === 0) {
+            //     state.modalIsOpen = true
+            //     state.typeOfModal = 'edit'
+            //     const subtasks = state.tasks.filter(task => task.child === parentTask.id && !task.done)
+            //     state.currentTask = { ...parentTask, subtasks: subtasks }
+            // } else {
+            //     state.modalIsOpen = false
+            // }
         },
         setCurrentTask: (state, action) => {
             state.currentTask = action.payload
@@ -75,6 +87,15 @@ export const tasksSlice = createSlice({
             state.tasks = [...state.tasks, action.payload]
             state.currentTask.subtasks = [...state.currentTask.subtasks, action.payload]
         },
+        setCurrentDay: (state, action) => {
+            state.date = action.payload
+        },
+        setCurrentPlan: (state, action) => {
+            state.isplan = action.payload
+        },
+        setSearch: (state, action) => {
+            state.search = action.payload
+        },
     },
 });
 
@@ -86,7 +107,9 @@ export const { toggleFetching,
     setPlan,
     setCurrentTask, changeCurrentTask,
     addSubtask,
-    setModal, closeModal
+    setModal, closeModal,
+    setCurrentDay, setCurrentPlan,
+    setSearch
 } = tasksSlice.actions;
 
 
@@ -152,6 +175,26 @@ export const addSubtaskThunk = (newTask) => dispatch => {
     API.addTask(newTask)
         .then(response => {
             dispatch(addSubtask(response))
+            dispatch(toggleFetching())
+        })
+}
+
+export const getPlanThunk = (date) => dispatch => {   
+    dispatch(toggleFetching())
+    API.getTodayPlan()
+        .then(response => {
+            dispatch(setCurrentDay(date))
+            dispatch(setCurrentPlan(response))
+            dispatch(toggleFetching())
+        })
+}
+
+export const addPlanThunk = () => dispatch => {   
+    dispatch(toggleFetching())
+    API.addTodayPlan()
+        .then(response => {
+            dispatch(setCurrentDay(response.date))
+            dispatch(setCurrentPlan(true))
             dispatch(toggleFetching())
         })
 }

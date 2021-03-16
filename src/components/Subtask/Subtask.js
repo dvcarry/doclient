@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { SortableElement, sortableHandle } from 'react-sortable-hoc';
 
 import { setModal } from '../../app/taskReducer'
 import './Subtask.css'
 
+const DragHandle = sortableHandle(() => <span className='draghandler'>:::</span>);
 
-export const Subtask = ({ task, change }) => {
+
+const Subtask = ({ task, change }) => {
 
     const [input, setInput] = useState(task.name)
     const dispatch = useDispatch()
@@ -19,13 +22,17 @@ export const Subtask = ({ task, change }) => {
 
     return (
         <div className='subtask'>
-            <input
+            <DragHandle />
+            <span>
+                {task.name}
+            </span>
+            {/* <input
                 className='subtask_input'
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onBlur={handleBlur}
                 autoFocus={task.name === ''}
-            />
+            /> */}
             <div className='subtask_info'>
                 <span className='subtask_plan'>{task.plan}</span>
                 <span
@@ -39,3 +46,5 @@ export const Subtask = ({ task, change }) => {
         </div>
     );
 };
+
+export default SortableElement(Subtask)
