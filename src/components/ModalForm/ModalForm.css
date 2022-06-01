@@ -8,9 +8,14 @@
     overflow-y: hidden;
 }
 
-.input_div {
+.input_block {
     display: grid;
     grid-template-columns: 1fr 1fr;
+}
+
+.input_div {
+    /* display: grid;
+    grid-template-columns: 1fr 1fr; */
     margin-bottom: 20px;
     align-items: center;
 }
@@ -42,4 +47,10 @@
 
 .button_block {
     margin-top: 30px;
+}
+
+.date_constant {
+    margin-right: 8px;
+    color: lightgray;
+    cursor: pointer;
 }

@@ -5,19 +5,18 @@ import { BALANCE } from '../../config/domain';
 import { SidebarItem } from '../SidebarItem/SidebarItem';
 import './Sidebar.css'
 
-const plans = ['inbox', 'today', 'upcoming', 'later', 'done']
+const plans = ['inbox', 'today', 'plan', 'week', 'upcoming', 'later', 'done']
 
 export const Sidebar = () => {
 
     const { plan, tasks, search } = useSelector(selectTasks)
-    console.log("🚀 ~ file: Sidebar.js ~ line 13 ~ Sidebar ~ search", search)
     const dispatch = useDispatch()
 
     let currentTask = tasks
 
-    if (search !== '') {
-        currentTask = tasks.filter(task => task.name.toLowerCase().includes(search.toLowerCase()) )
-    }
+    // if (search !== '') {
+    //     currentTask = tasks.filter(task => task.name.toLowerCase().includes(search.toLowerCase()) )
+    // }
     
 
     return (
@@ -29,7 +28,8 @@ export const Sidebar = () => {
                 {
                     plans.map(item => {
 
-                        const amount = currentTask.filter(task => task.plan === item).length
+                        // const amount = currentTask.filter(task => task.plan === item).length
+                        // const amount = tasks[item].length
 
                         return (
                             <SidebarItem
@@ -38,7 +38,7 @@ export const Sidebar = () => {
                                 active={plan === item}
                                 // click={() => dispatch(setPlan(item))}
                                 click={() => dispatch(setPlan({ plan: item, filtertype: 'plan' }))}
-                                amount={amount}
+                                // amount={amount}
                             />
                         )
                     })
@@ -48,7 +48,8 @@ export const Sidebar = () => {
                 {
                     BALANCE.map(item => {
 
-                        const amount = currentTask.filter(task => task.balance === item && task.plan !== 'done').length
+                        // const amount = currentTask.filter(task => task.balance === item && task.plan !== 'done').length
+                        const amount = tasks.all.filter(task => task.balance === item).length
 
                         return (
                             <SidebarItem

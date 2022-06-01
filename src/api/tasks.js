@@ -1,11 +1,20 @@
 import axios from 'axios'
 
 axios.defaults.baseURL = 'http://82.146.40.11:5002/api/';
+// axios.defaults.baseURL = 'http://localhost:3006/api/';
 
 export const API = {
     async getTasks() {
         try {
-            const { data } = await axios.get('tasks')
+            const { data } = await axios.get('tasks/plan')
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async getTodayTasks() {
+        try {
+            const { data } = await axios.get('tasks/today')
             return data
         } catch (error) {
             console.log(error)
@@ -14,6 +23,22 @@ export const API = {
     async getDoneTasks() {
         try {
             const { data } = await axios.get('tasks/done')
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async getProjects() {
+        try {
+            const { data } = await axios.get('tasks/projects')
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async getProject(project_id) {
+        try {
+            const { data } = await axios.get('tasks/projects/' + project_id)
             return data
         } catch (error) {
             console.log(error)
@@ -52,6 +77,14 @@ export const API = {
             console.log(error)
         }
     },
+    async up(index, task_id) {
+        try {
+            await axios.put('tasks/up', {index, task_id})
+            // return data
+        } catch (error) {
+            console.log(error)
+        }
+    },
     async do(id, index, plan) {
         try {
             await axios.put('tasks/do', {id, index, plan})
@@ -76,4 +109,28 @@ export const API = {
             console.log(error)
         }
     },
+    async changePlan(task_id, oldPlan, newPlan, oldIndex, newIndex) {
+        try {
+            const { data } = await axios.put('tasks/replan', {task_id, oldPlan, newPlan, oldIndex, newIndex})
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async getWeek() {
+        try {
+            const { data } = await axios.get('tasks/week')
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    // async getPlanTasks() {
+    //     try {
+    //         const { data } = await axios.get('tasks/plan')
+    //         return data
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // },
 }

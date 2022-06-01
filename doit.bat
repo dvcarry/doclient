@@ -1,2 +1,2 @@
 cd "C:/JS/do"
-npm run start
+npm run dev

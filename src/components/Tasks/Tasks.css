@@ -25,3 +25,16 @@ ul {
 li {
     list-style-type: none;
 }
+
+.block {
+    margin-bottom: 30px;
+}
+
+.plantask_div {
+    margin-bottom: 30px;
+}
+
+.plantask_date {
+    font-weight: 500;
+    margin-bottom: 10px;
+}

@@ -1,1 +1,10 @@
+.App {
+    background-color: #f8fbff;
+    min-height: 100vh;
+}
 
+
+.wrapper {    
+    max-width: 800px;
+    margin: 0 auto;
+}

@@ -50,4 +50,13 @@ export const CURRENT_TASK = {
 }
 
 export const BALANCE = ['работа', 'проект', "семья", "здоровье", "быт", "развитие", "отдых"]
-export const PLANS = ['today', 'upcoming', "later"]
+export const PLANS = ['today', 'week', 'upcoming', "later"]
+
+export const TASK_TYPES = {
+    plan: 'plan',
+    today: 'today'
+}
+
+export const DATE_CONSTANTS = [
+    { eng: 'today', ru: 'сегодня', days: 0 }, { eng: 'tomorrow', ru: 'завтра', days: 1 }, { eng: 'aftertomorrow', ru: 'послезавтра', days: 2 }
+]

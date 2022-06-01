@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { DatePicker, Select } from 'antd';
+import { DatePicker, Select, Button, Radio, Switch } from 'antd';
 import moment from 'moment';
 import TextareaAutosize from 'react-textarea-autosize';
 import { useDispatch, useSelector } from 'react-redux';
 import { sortableContainer } from 'react-sortable-hoc';
 
-import { Button } from '../Button/Button';
 import { ParentTask } from '../ParentTask/ParentTask';
 import Subtask from '../Subtask/Subtask';
 import { SubtaskEdit } from '../Subtask/SubtaskEdit';
@@ -14,6 +13,8 @@ import { Do } from '../Do/Do';
 import { changeCurrentTask, deleteTaskThunk, saveTaskThunk, selectTasks } from '../../app/taskReducer';
 
 import './ModalForm.css'
+import { getDateFromConstant } from '../../config/helpers';
+import { DATE_CONSTANTS } from '../../config/domain';
 
 
 const SortableContainer = sortableContainer(({ children }) => {
@@ -23,17 +24,13 @@ const SortableContainer = sortableContainer(({ children }) => {
 
 export const ModalEdit = () => {
 
-    const today = new Date()
-
 
     const { Option } = Select;
-    const { currentTask, tasks, isplan } = useSelector(selectTasks)
-    console.log("🚀 ~ file: ModalEdit.js ~ line 31 ~ ModalEdit ~ currentTask", currentTask)
+    const { currentTask, tasks, isplan, isFetching } = useSelector(selectTasks)
 
     const dispatch = useDispatch()
 
     const [isSubtask, setIsSubtask] = useState(false)
-    const [isParent, setIsParent] = useState(false)
 
     const handleChangeName = e => {
         changeCurrentTask('name', e.target.value)
@@ -41,13 +38,20 @@ export const ModalEdit = () => {
     }
 
     const handleChangeType = (value, option) => {
+        console.log("🚀 ~ file: ModalEdit.js ~ line 43 ~ handleChangeType ~ value", value, option)
         dispatch(changeCurrentTask({ type: option, value: value }))
+        // dispatch(changeCurrentTask({ type: option, value: value.target.value }))
     }
 
     const handleChangeDate = (date, dateString) => {
         console.log("🚀 ~ file: ModalEdit.js ~ line 39 ~ handleChangeDate ~ dateString", dateString)
 
         dispatch(changeCurrentTask({ type: 'date', value: dateString }))
+    }
+
+    const setDateFromConstants = (dateConstant) => {
+        const date = getDateFromConstant(dateConstant)
+        dispatch(changeCurrentTask({ type: 'date', value: date }))
     }
 
     // const keyPressHandler = e => {
@@ -73,32 +77,11 @@ export const ModalEdit = () => {
 
 
     return (
-        <div
-        // tabIndex="0"
-        // onKeyPress={keyPressHandler}
-        // onKeyDown={keyPressHandler}
-        >
-            {
-                currentTask.childname
-                    ? <ParentTask task={parentTasks} />
-                    : !isParent
-                        ? <a onClick={() => setIsParent(true)}>Добавить родителя</a>
-                        : <Select
-                            showSearch
-                            style={{ width: '100%' }}
-                            onChange={value => handleChangeType(value, 'child')} value={currentTask.child}
-                            filterOption={(input, option) =>
-                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                            }
-                            filterSort={(optionA, optionB) =>
-                                optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-                            }
-                        >
-                            {
-                                tasks.map(task => <Option value={task.id}>{task.name}</Option>)
-                            }
-                        </Select>
-            }
+        <div>
+            <ParentTask
+                name={currentTask.parentname}
+                id={currentTask.parentid}
+            />
             <div>
                 <div className='flex'>
                     <Do task={currentTask} />
@@ -109,39 +92,254 @@ export const ModalEdit = () => {
                     />
                 </div>
             </div>
+            <div className='input_block'>
+                <div className='input_div'>
+                    <div>Тип задачи</div>
+                    {/* <Select
+                        onChange={value => handleChangeType(value, 'type')}
+                        value={currentTask.type}
+                        style={{ width: 200 }}
+                        size='large'
+                    >
+                        <Option value="задача">задача</Option>
+                        <Option value="проект">проект</Option>
+                    </Select> */}
+                    <Radio.Group onChange={value => handleChangeType(value, 'type')} value={currentTask.type}>
+                        <Radio value={"задача"}>задача</Radio>
+                        <Radio value={"проект"}>проект</Radio>
+                    </Radio.Group>
+                </div>
 
-            <div className='input_div'>
-                <div>Тип задачи</div>
-                <Select onChange={value => handleChangeType(value, 'type')} value={currentTask.type}>
-                    <Option value="задача">задача</Option>
-                    <Option value="проект">проект</Option>
-                    <Option value="привычка">привычка</Option>
-                    <Option value="другое">другое</Option>
-                </Select>
+                <div className='input_div'>
+                    <div>Сфера жизни</div>
+                    <Select
+                        onChange={value => handleChangeType(value, 'balance')}
+                        value={currentTask.balance}
+                        style={{ width: 200 }}
+                        size='large'
+                    >
+                        <Option value="работа">работа</Option>
+                        <Option value="проект">проект</Option>
+                        <Option value="развитие">развитие</Option>
+                        <Option value="семья">семья</Option>
+                        <Option value="здоровье">здоровье</Option>
+                        <Option value="быт">быт</Option>
+                        <Option value="отдых">отдых</Option>
+                    </Select>
+                </div>
             </div>
 
-            <div className='input_div'>
-                <div>Сфера жизни</div>
-                <Select onChange={value => handleChangeType(value, 'balance')} value={currentTask.balance}>
-                    <Option value="работа">работа</Option>
-                    <Option value="проект">проект</Option>
-                    <Option value="развитие">развитие</Option>
-                    <Option value="семья">семья</Option>
-                    <Option value="здоровье">здоровье</Option>
-                    <Option value="быт">быт</Option>
-                    <Option value="отдых">отдых</Option>
-                </Select>
+            <div className='input_block'>
+                <div className='input_div'>
+                    <div>Цель</div>
+                    {/* <Select
+                        onChange={value => handleChangeType(value, 'goal')}
+                        value={currentTask.goal}
+                        style={{ width: 200 }}
+                        size='large'
+                    >
+                        <Option value={true}>Да</Option>
+                        <Option value={false}>Нет</Option>
+                    </Select> */}
+                    <Switch defaultChecked={currentTask.goal} onChange={value => handleChangeType(value, 'goal')} />
+                </div>
+                {
+                    // currentTask.type !== 'проект'
+                    //     ? <div className='input_div'>
+                    //         <div>Действие</div>
+                    //         <Select
+                    //             onChange={value => handleChangeType(value, 'action')}
+                    //             value={currentTask.action}
+                    //             style={{ width: 200 }}
+                    //             size='large'
+                    //         >
+                    //             <Option value="do">лягушка</Option>
+                    //             {/* <Option value="wait">простая</Option>
+                    //             <Option value="go">go</Option> */}
+                    //             <Option value="call">простая</Option>
+                    //         </Select>
+                    //     </div>
+                    //     : null
+                }
+                {/* <div className='input_div'>
+                    <div>Действие</div>
+                    <Select
+                        onChange={value => handleChangeType(value, 'action')}
+                        value={currentTask.action}
+                        style={{ width: 200 }}
+                        size='large'
+                    >
+                        <Option value="do">do</Option>
+                        <Option value="wait">wait</Option>
+                        <Option value="go">go</Option>
+                        <Option value="call">call</Option>
+                    </Select>
+                </div> */}
             </div>
+            {
+                currentTask.type !== 'проект'
+                    ? <div className='input_block'>
+                        {/* <div className='input_div'>
+                            <div>Необходимое время</div>
+                            <Select
+                                onChange={value => handleChangeType(value, 'period')}
+                                value={currentTask.period}
+                                style={{ width: 200 }}
+                                size='large'
+                            >
+                                <Option value="5">5</Option>
+                                <Option value="15">15</Option>
+                                <Option value="30">30</Option>
+                                <Option value="45">45</Option>
+                                <Option value="60">60</Option>
+                                <Option value="90">90</Option>
+                                <Option value="120">120</Option>
+                                <Option value="180">180</Option>
+                                <Option value="240">240</Option>
+                            </Select>
+                        </div> */}
+                        <div className='input_div'>
+                            <div>Дата</div>
+                            <DatePicker
+                                // value={currentTask.date ? moment(currentTask.date, 'YYYY-MM-DD') : null}
+                                value={currentTask.date ? moment(currentTask.date) : null}
+                                onChange={handleChangeDate}
+                                style={{ width: 200 }}
+                                size='large'
+                            />
+                            <div>
+                                {
+                                    DATE_CONSTANTS.map(item => <span key={item.eng} className='date_constant' onClick={() => setDateFromConstants(item.eng)}>{item.ru}</span>)
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    : null
+            }
 
-            <div className='input_div'>
-                <div>Цель</div>
-                <Select onChange={value => handleChangeType(value, 'goal')} value={currentTask.goal}>
-                    <Option value={true}>Да</Option>
-                    <Option value={false}>Нет</Option>
+            {/* <div className='input_block'>
+                <div className='input_div'>
+                    <div>Необходимое время</div>
+                    <Select
+                        onChange={value => handleChangeType(value, 'period')}
+                        value={currentTask.period}
+                        style={{ width: 200 }}
+                        size='large'
+                    >
+                        <Option value="5">5</Option>
+                        <Option value="15">15</Option>
+                        <Option value="30">30</Option>
+                        <Option value="45">45</Option>
+                        <Option value="60">60</Option>
+                        <Option value="90">90</Option>
+                        <Option value="120">120</Option>
+                        <Option value="180">180</Option>
+                        <Option value="240">240</Option>
+                    </Select>
+                </div>
+                <div className='input_div'>
+                    <div>Дата</div>
+                    <DatePicker
+                        // value={currentTask.date ? moment(currentTask.date, 'YYYY-MM-DD') : null}
+                        value={currentTask.date ? moment(currentTask.date) : null}
+                        onChange={handleChangeDate}
+                        style={{ width: 200 }}
+                        size='large'
+                    />
+                </div>
+            </div> */}
+            {/* {
+                currentTask.type !== 'проект'
+                    ? <div className='input_block'>
+                        <div className='input_div'>
+                            <div>Повторяющаяся</div>
+                            <Select
+                                onChange={value => handleChangeType(value, 'repeat')}
+                                value={currentTask.repeat}
+                                style={{ width: 200 }}
+                                size='large'
+                            >
+                                <Option value={false}>нет</Option>
+                                <Option value={true}>да</Option>
+                            </Select>
+                        </div>
+                        {
+                            currentTask.repeat
+                                ? <div className='input_div'>
+                                    <div>Повторяющаяся</div>
+                                    <Select
+                                        onChange={value => handleChangeType(value, 'repeatday')}
+                                        value={currentTask.repeatday}
+                                        style={{ width: 200 }}
+                                        size='large'
+                                    >
+                                        <Option value={1}>1</Option>
+                                        <Option value={2}>2</Option>
+                                        <Option value={3}>3</Option>
+                                        <Option value={7}>7</Option>
+                                        <Option value={30}>30</Option>
+                                    </Select>
+                                </div>
+                                : null
+                        }
+                    </div>
+                    : null
+            } */}
+
+            {/* <div className='input_block'>
+                <div className='input_div'>
+                    <div>Повторяющаяся</div>
+                    <Select
+                        onChange={value => handleChangeType(value, 'repeat')}
+                        value={currentTask.repeat}
+                        style={{ width: 200 }}
+                        size='large'
+                    >
+                        <Option value={false}>нет</Option>
+                        <Option value={true}>да</Option>
+                    </Select>
+                </div>
+                {
+                    currentTask.repeat
+                        ? <div className='input_div'>
+                            <div>Повторяющаяся</div>
+                            <Select
+                                onChange={value => handleChangeType(value, 'repeatday')}
+                                value={currentTask.repeatday}
+                                style={{ width: 200 }}
+                                size='large'
+                            >
+                                <Option value={1}>1</Option>
+                                <Option value={2}>2</Option>
+                                <Option value={3}>3</Option>
+                                <Option value={30}>30</Option>
+                            </Select>
+                        </div>
+                        : null
+                }
+            </div> */}
+
+
+            {/* <div className='input_div'>
+                <div>План выполнить</div>
+                <Select
+                    onChange={value => handleChangeType(value, 'plan')}
+                    value={currentTask.plan}
+                    style={{ width: '100%' }}
+                    size='large'
+                >
+                    <Option value="inbox">inbox</Option>
+                    <Option value="today">today</Option>
+                    <Option value="week">week</Option>
+                    <Option value="upcoming">upcoming</Option>
+                    <Option value="later">later</Option>
                 </Select>
-            </div>
+            </div> */}
 
-            <div className='input_div'>
+
+
+
+            {/* <div className='input_div'>
                 <div>План выполнить</div>
                 <Select onChange={value => handleChangeType(value, 'plan')} value={currentTask.plan}>
                     <Option value="inbox">inbox</Option>
@@ -215,59 +413,64 @@ export const ModalEdit = () => {
                         </Select>
                     </div>
                     : null
-            }
-
-            <div className='subtask_block'>
-                <div>Подзадачи</div>
-                <div
-                    onClick={() => setIsSubtask(true)}
-                    className='subtask_button'
-                >
-                    +
-            </div>
-
-            </div>
-            {/* {
-                currentTask.subtasks.length > 0 ?
-                    currentTask.subtasks.map(subtask => (
-                        <Subtask
-                            task={subtask}
-                            key={subtask.id}
-                        />))
-                    : null
             } */}
-            <SortableContainer
-                onSortEnd={sortHandler}
-                useDragHandle
-            >
-                {currentTask.subtasks.map((subtask, index) => (
-                    <Subtask
-                        task={subtask}
-                        key={subtask.id}
-                        index={index}
-                    />
-                ))}
-            </SortableContainer>
+
             {
-                isSubtask
-                    ? <SubtaskEdit
-                        close={() => setIsSubtask(false)}
-                        goal={currentTask.goal}
-                        balance={currentTask.balance}
-                        child={currentTask.id}
-                        plan={currentTask.plan}
-                    />
+                currentTask.type === 'проект'
+                    ? <>
+                        <div className='subtask_block'>
+                            <div>Подзадачи</div>
+                            <div
+                                onClick={() => setIsSubtask(true)}
+                                className='subtask_button'
+                            >
+                                +
+                            </div>
+                        </div>
+
+                        <SortableContainer
+                            onSortEnd={sortHandler}
+                            useDragHandle
+                        >
+                            {currentTask.subtasks.map((subtask, index) => (
+                                <Subtask
+                                    task={subtask}
+                                    key={subtask.id}
+                                    index={index}
+                                />
+                            ))}
+                        </SortableContainer>
+                        {
+                            isSubtask
+                                ? <SubtaskEdit
+                                    close={() => setIsSubtask(false)}
+                                    goal={currentTask.goal}
+                                    balance={currentTask.balance}
+                                    child={currentTask.id}
+                                    plan='inbox'
+                                />
+                                : null
+                        }
+                    </>
                     : null
             }
+
+
+
+
             <div className='button_block'>
                 <Button
-                    title='Сохранить'
-                    click={saveCurrentTask}
-                />
+                    onClick={saveCurrentTask}
+                    loading={isFetching}
+                >
+                    Сохранить
+                </Button>
                 <Button
-                    title='Удалить'
-                    click={deleteHandler}
-                />
+                    onClick={deleteHandler}
+                    loading={isFetching}
+                >
+                    Удалить
+                </Button>
             </div>
         </div>
     )

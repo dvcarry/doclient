@@ -19,3 +19,136 @@
 .section {
     padding: 40px;
 }
+
+.kanban {
+    display: flex;
+    margin: 100px auto;
+}
+
+.habit_mode {
+    display: grid;
+    grid-template-columns: 300px 1fr 300px;
+    grid-gap: 50px;
+    width: 1300px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 40px;
+}
+
+.habit_date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+}
+
+.datechange {
+    margin: 0 5px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.datechange:hover {
+    color: blue;
+}
+
+.score_total {
+    display: flex;
+    justify-content: center;
+    font-size: medium;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.category_div {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+}
+
+.category_title {
+    font-weight: 700;
+    margin-bottom: 20px;    
+}
+
+.week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 20px;
+    padding: 30px;
+}
+
+.week_balance_header {
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.week_item {
+    border: 1px solid lightgray;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.week_item_upcoming {
+    margin-bottom: 10px;
+    padding: 8px;  
+    border-radius: 5px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.plan_section {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid grey;
+    font-size: 10px;
+ }
+
+.table_head {
+    writing-mode: vertical-lr;
+    /* display: inline-block; */
+}
+
+td, th {
+    border: 1px solid grey;
+ }
+
+ .analyze_wrapper {
+     display: grid;
+     grid-template-columns: 2fr 1fr 1fr;
+     padding: 30px;
+ }
+
+ .flex_around {
+     display: flex;
+     justify-content: space-between;
+ }
+
+ .message {
+     display: flex;
+     justify-content: center;
+     margin-top: 40px;
+     font-size: large;
+     color: red;
+     font-weight: 700;
+ }
+
+ .block {
+     margin-bottom: 20px;
+ }
+
+ .gift {
+     padding: 15px;
+     background-color: white;
+     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+     cursor: pointer;
+     margin-bottom: 20px;
+ }

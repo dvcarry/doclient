@@ -6,6 +6,7 @@
 /bot
 /.pnp
 .pnp.js
+doit.bat
 
 # testing
 /coverage

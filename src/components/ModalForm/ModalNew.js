@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
+import { Button } from 'antd';
 
 import { addTaskThunk, selectTasks } from '../../app/taskReducer';
-import { Button } from '../Button/Button';
 
 import './ModalForm.css'
 
@@ -11,7 +11,7 @@ export const ModalNew = () => {
 
     const [name, setName] = useState('')
 
-    const { currentTask } = useSelector(selectTasks)
+    const { currentTask, isFetching } = useSelector(selectTasks)
 
     const dispatch = useDispatch()
 
@@ -33,7 +33,6 @@ export const ModalNew = () => {
         <div
             onKeyPress={saveKeyHandler}
         >
-
             <TextareaAutosize
                 value={name}
                 className='input_name'
@@ -48,9 +47,11 @@ export const ModalNew = () => {
             /> */}
             <div className='button_block'>
                 <Button
-                    title='Сохранить'
-                    click={saveHandler}
-                />
+                    onClick={saveHandler}
+                    loading={isFetching}
+                >
+                    Сохранить
+                </Button>
             </div>
         </div>
     )

@@ -6,10 +6,15 @@ import { RELAX_FOR_HOUR, START_TIME_IN_MINUTES } from '../../config/domain';
 import { getTimeFromMins } from '../../config/helpers';
 
 import './Score.css'
+import { useSelector } from 'react-redux';
+import { selectTasks } from '../../app/taskReducer';
 
-export const Score = ({ tasks }) => {
+export const Score = () => {
 
-    const todayTasks = tasks.filter(task => task.plan === 'today')
+    const { tasks, doneTasks } = useSelector(selectTasks)
+
+    const todayTasks = tasks['today']
+    // const todayTasks = tasks.filter(task => task.plan === 'today')
 
     const todayWorkTime = todayTasks.reduce((acc, cur) => acc + cur.period, 0)
 
@@ -18,7 +23,8 @@ export const Score = ({ tasks }) => {
     const startTime = getTimeFromMins(START_TIME_IN_MINUTES)
     const endOfDay = getTimeFromMins(START_TIME_IN_MINUTES + todayWorkRelaxTimeMinutes)
 
-    const doneTasks = tasks.filter(task => task.plan === 'done')
+    // const doneTasks = tasks['done']
+    // const doneTasks = tasks.filter(task => task.plan === 'done')
     const doneTasksObject = doneTasks.length > 0 && doneTasks.reduce((acc, cur) => {
         acc[cur.balance] += cur.period
         return acc

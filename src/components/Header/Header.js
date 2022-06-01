@@ -53,10 +53,12 @@ export const Header = () => {
                 {/* <div className='header_section'>
                     <NavLink to='/focus'>Фокус</NavLink>
                 </div> */}
-            <Button
+                <NavLink to='/kanban'>Канбан</NavLink>
+                <NavLink to='/habits'>Привычки</NavLink>
+            {/* <Button
                 title='Создать задачу'
                 click={() => dispatch(setModal({ typeOfModal: 'new', currentTask: CURRENT_TASK }))}
-            />
+            /> */}
         </div>
     )
 }

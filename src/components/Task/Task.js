@@ -3,19 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SortableElement, sortableHandle } from 'react-sortable-hoc';
 import moment from 'moment';
 
-import { selectTasks, setModal } from '../../app/taskReducer';
+import { selectTasks, setModal, upTaskThunk } from '../../app/taskReducer';
 import { Do } from '../Do/Do';
 // import { TasksContext } from '../../hooks/useTasks';
 import './index.css'
 import { Action } from '../Action/Action';
+import { TASK_TYPES } from '../../config/domain';
 
 // export const Task = ({ name, clickDone, id, type, period, balance, children, goal, today }) => {
 
 
-const DragHandle = sortableHandle(() => <span className='draghandler'>:::</span>);
+// const DragHandle = sortableHandle(() => <span className='draghandler'>:::</span>);
 
 
-export const Task = ({ value }) => {
+export const Task = ({ value, type }) => {
 
     const dispatch = useDispatch()
 
@@ -23,36 +24,51 @@ export const Task = ({ value }) => {
 
     const { filtertype } = useSelector(selectTasks)
 
+    const upTask = () => {
+        dispatch(upTaskThunk(value.index, value.id))
+    }
+
     let classes = ['task_name']
     if (value.goal) {
         classes.push('goal')
     }
 
-    if (value.type === 'проект') {
-        classes.push('project')
-    }
+    // if (value.plan === 'today' && moment(today).isAfter(new Date(value.date), 'day')) {
+    //     classes.push('goal')
+    // }
+
+
+
+    // if (value.type === 'проект') {
+    //     classes.push('project')
+    // }
 
     let dateClasses = ['task_tag']
     if (moment(today).isSame(new Date(value.date), 'day')) {
         dateClasses.push('day_today')
     }
     if (moment(today).isAfter(new Date(value.date), 'day')) {
-        dateClasses.push('day_yesterday')
+        dateClasses.push('importantTag')
+    }
+
+    let periodClasses = ['task_tag']
+    if (value.period === 5) {
+        periodClasses.push('importantTag')
     }
 
     return (
         <div
             className='task'
+            onClick={() => dispatch(setModal({ typeOfModal: 'edit', currentTask: value }))}
         >
             <div className='task_left'>
                 <div className='task_tools'>
                     <Action type={value.action} />
-                    <DragHandle />
                     <Do task={value} />
                 </div>
                 <div
                     className='task_name'
-                    onClick={() => dispatch(setModal({ typeOfModal: 'edit', currentTask: value }))}
+                    // onClick={() => dispatch(setModal({ typeOfModal: 'edit', currentTask: value }))}
                 >
                     <span
                         className={classes.join(' ')}
@@ -60,9 +76,9 @@ export const Task = ({ value }) => {
                         {value.name}
                     </span>
                     {
-                        value.childname
+                        value.parentname
                             ? <span className='task_children'>
-                                {`<  ${value.childname}`}
+                                {`<  ${value.parentname}`}
                             </span>
                             : value.isparent
                                 ? <span className='task_children'>{' >'}</span>
@@ -71,24 +87,35 @@ export const Task = ({ value }) => {
                 </div>
             </div>
 
+
             <div className='task_right'>
                 <div>
-                    <span className='task_tag'>
+                    {/* <span className='task_tag'> */}
+                    {/* <span className={periodClasses.join(' ')}>
                         {value.period}
-                    </span>
+                    </span> */}
                     {
                         filtertype === 'plan' ? <span className='task_tag'>{value.balance}</span> : <span className='task_tag'>{value.plan}</span>
                     }
 
-                    <span className={dateClasses.join(' ')}>
+                    {/* <span className={dateClasses.join(' ')}>
                         {
                             value.date ? moment(value.date).format('DD.MM') : null
                         }
-                    </span>
+                    </span> */}
+                    {
+                        type === TASK_TYPES.today
+                            ? <span
+                                onClick={upTask}
+                                className='task_up'>
+                                &#8597;
+                                </span>
+                            : null
+                    }
                 </div>
             </div>
         </div>
     )
 }
 
-export default SortableElement(Task)
+// export default SortableElement(Task)
