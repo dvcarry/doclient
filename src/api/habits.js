@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // axios.defaults.baseURL = 'http://82.146.40.11:5002/api/';
-axios.defaults.baseURL = 'http://localhost:3006/api/';
+// axios.defaults.baseURL = 'http://localhost:3006/api/';
 
 export const API = {
     async getHabits(date) {
