@@ -20,6 +20,13 @@ const Subtask = ({ task, change }) => {
         }
     }
 
+    let dateFormat = ''
+    if (task.date) {
+        const dateFormatArray = task.date.split('-')
+        dateFormat = dateFormatArray[2] + '.' + dateFormatArray[1]
+    }
+    
+
     return (
         <div className='subtask'>
             <DragHandle />
@@ -34,7 +41,7 @@ const Subtask = ({ task, change }) => {
                 autoFocus={task.name === ''}
             /> */}
             <div className='subtask_info'>
-                <span className='subtask_plan'>{task.plan}</span>
+                <span className='subtask_plan'>{dateFormat}</span>
                 <span
                     className='subtask_go'
                     onClick={() => dispatch(setModal({ typeOfModal: 'edit', currentTask: task }))}

@@ -30,7 +30,7 @@ export const API = {
     },
     async getProjects() {
         try {
-            const { data } = await axios.get('tasks/projects')
+            const { data } = await axios.get('projects')
             return data
         } catch (error) {
             console.log(error)
@@ -38,7 +38,7 @@ export const API = {
     },
     async getProject(project_id) {
         try {
-            const { data } = await axios.get('tasks/projects/' + project_id)
+            const { data } = await axios.get('projects/' + project_id)
             return data
         } catch (error) {
             console.log(error)

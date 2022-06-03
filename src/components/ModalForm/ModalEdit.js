@@ -39,8 +39,8 @@ export const ModalEdit = () => {
 
     const handleChangeType = (value, option) => {
         console.log("🚀 ~ file: ModalEdit.js ~ line 43 ~ handleChangeType ~ value", value, option)
-        dispatch(changeCurrentTask({ type: option, value: value }))
-        // dispatch(changeCurrentTask({ type: option, value: value.target.value }))
+        // dispatch(changeCurrentTask({ type: option, value: value }))
+        dispatch(changeCurrentTask({ type: option, value: value.target.value }))
     }
 
     const handleChangeDate = (date, dateString) => {
