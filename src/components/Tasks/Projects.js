@@ -9,6 +9,7 @@ import { API } from '../../api/tasks';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProjectsThunk, getTodayTasksThunk, selectTasks } from '../../app/taskReducer';
 import { BALANCE } from '../../config/domain';
+import { Project } from '../Project/Project';
 
 
 
@@ -38,11 +39,18 @@ export const Projects = () => {
                             <div className='plantask_date'>{item}</div>
                             {
                                 tasks.map((task, index) => (
-                                    <Task
+                                    <Project
                                         key={task.id}
                                         index={index}
                                         value={task}
+                                        childname={task.childname}
+                                        childdate={task.childdate}
                                     />
+                                    // <Task
+                                    //     key={task.id}
+                                    //     index={index}
+                                    //     value={task}
+                                    // />
                                 ))
                             }
                         </div>
