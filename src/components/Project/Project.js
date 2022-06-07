@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SortableElement, sortableHandle } from 'react-sortable-hoc';
 import moment from 'moment';
 
-import { selectTasks, setModal, upTaskThunk } from '../../app/taskReducer';
+import { selectTasks, setModal } from '../../app/taskReducer';
+import { getProjectThunk, upTaskThunk } from '../../app/thunks';
 import { Do } from '../Do/Do';
 // import { TasksContext } from '../../hooks/useTasks';
 // import './index.css'
 import { Action } from '../Action/Action';
 import { TASK_TYPES } from '../../config/domain';
+import { useCurrentTask } from '../../hooks/useCurrentTask';
 
 
 export const Project = ({ value, type, childname, childdate }) => {
@@ -19,9 +21,10 @@ export const Project = ({ value, type, childname, childdate }) => {
 
     const { filtertype } = useSelector(selectTasks)
 
-    const upTask = () => {
-        dispatch(upTaskThunk(value.index, value.id))
+    const openProject = async () => {
+        const task = await dispatch(getProjectThunk(value.id))        
     }
+
 
     let classes = ['task_name']
     if (value.goal) {
@@ -38,25 +41,26 @@ export const Project = ({ value, type, childname, childdate }) => {
     //     classes.push('project')
     // }
 
-    let dateClasses = ['task_tag']
-    if (moment(today).isSame(new Date(value.date), 'day')) {
-        dateClasses.push('day_today')
-    }
-    if (moment(today).isAfter(new Date(value.date), 'day')) {
-        dateClasses.push('importantTag')
-    }
+    // let dateClasses = ['task_tag']
+    // if (moment(today).isSame(new Date(value.date), 'day')) {
+    //     dateClasses.push('day_today')
+    // }
+    // if (moment(today).isAfter(new Date(value.date), 'day')) {
+    //     dateClasses.push('importantTag')
+    // }
 
-    let periodClasses = ['task_tag']
-    if (value.period === 5) {
-        periodClasses.push('importantTag')
-    }
+    // let periodClasses = ['task_tag']
+    // if (value.period === 5) {
+    //     periodClasses.push('importantTag')
+    // }
 
 
 
     return (
         <div
             className='task'
-            onClick={() => dispatch(setModal({ typeOfModal: 'edit', currentTask: value }))}
+            // onClick={() => dispatch(setModal({ typeOfModal: 'edit', currentTask: value }))}
+            onClick={openProject}
         >
             <div className='task_left'>
                 <div className='task_tools'>

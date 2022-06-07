@@ -1,9 +1,27 @@
 import axios from 'axios'
 
 axios.defaults.baseURL = 'http://82.146.40.11:5002/api/';
-// axios.defaults.baseURL = 'http://localhost:3006/api/';
+// axios.defaults.baseURL = 'http://localhost:5002/api/';
 
 export const API = {
+    project: {
+        async getProjects() {
+            try {
+                const { data } = await axios.get('projects')
+                return data
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async getProject(project_id) {
+            try {
+                const { data } = await axios.get('projects/' + project_id)
+                return data
+            } catch (error) {
+                console.log(error)
+            }
+        },
+    },
     async getTasks() {
         try {
             const { data } = await axios.get('tasks/plan')
@@ -28,22 +46,7 @@ export const API = {
             console.log(error)
         }
     },
-    async getProjects() {
-        try {
-            const { data } = await axios.get('projects')
-            return data
-        } catch (error) {
-            console.log(error)
-        }
-    },
-    async getProject(project_id) {
-        try {
-            const { data } = await axios.get('projects/' + project_id)
-            return data
-        } catch (error) {
-            console.log(error)
-        }
-    },
+
     async addTask(task) {
         try {
             const { data } = await axios.post('tasks', task)
@@ -71,7 +74,7 @@ export const API = {
     },
     async reindex(plan, oldIndex, newIndex) {
         try {
-            await axios.put('tasks/reindex', {plan, oldIndex, newIndex})
+            await axios.put('tasks/reindex', { plan, oldIndex, newIndex })
             // return data
         } catch (error) {
             console.log(error)
@@ -79,20 +82,28 @@ export const API = {
     },
     async up(index, task_id) {
         try {
-            await axios.put('tasks/up', {index, task_id})
+            await axios.put('tasks/up', { index, task_id })
             // return data
         } catch (error) {
             console.log(error)
         }
     },
-    async do(id, index, plan) {
+    async do(id) {
         try {
-            await axios.put('tasks/do', {id, index, plan})
-            // return data
+            const { data } = await axios.post('tasks/do', { id })
+            return data
         } catch (error) {
             console.log(error)
         }
     },
+    // async do(id, index, plan) {
+    //     try {
+    //         await axios.put('tasks/do', {id, index, plan})
+    //         // return data
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // },
     async getTodayPlan() {
         try {
             const { data } = await axios.get('days')
@@ -111,7 +122,7 @@ export const API = {
     },
     async changePlan(task_id, oldPlan, newPlan, oldIndex, newIndex) {
         try {
-            const { data } = await axios.put('tasks/replan', {task_id, oldPlan, newPlan, oldIndex, newIndex})
+            const { data } = await axios.put('tasks/replan', { task_id, oldPlan, newPlan, oldIndex, newIndex })
             return data
         } catch (error) {
             console.log(error)

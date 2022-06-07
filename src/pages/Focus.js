@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 
 
-import { getTasksThunk, selectTasks, setCurrentTask } from '../app/taskReducer';
+import { selectTasks, setCurrentTask } from '../app/taskReducer';
+import { getTasksThunk } from '../app/thunks';
 import { Button } from '../components/Button/Button';
 import { FocusTask } from '../components/FocusTask/FocusTask'
 

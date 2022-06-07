@@ -10,7 +10,8 @@ import Subtask from '../Subtask/Subtask';
 import { SubtaskEdit } from '../Subtask/SubtaskEdit';
 import { Do } from '../Do/Do';
 
-import { changeCurrentTask, deleteTaskThunk, saveTaskThunk, selectTasks } from '../../app/taskReducer';
+import { changeCurrentTask, selectTasks } from '../../app/taskReducer';
+import { deleteTaskThunk, saveTaskThunk } from '../../app/thunks';
 
 import './ModalForm.css'
 import { getDateFromConstant } from '../../config/helpers';
@@ -39,8 +40,8 @@ export const ModalEdit = () => {
 
     const handleChangeType = (value, option) => {
         console.log("🚀 ~ file: ModalEdit.js ~ line 43 ~ handleChangeType ~ value", value, option)
-        // dispatch(changeCurrentTask({ type: option, value: value }))
-        dispatch(changeCurrentTask({ type: option, value: value.target.value }))
+        dispatch(changeCurrentTask({ type: option, value }))
+        // dispatch(changeCurrentTask({ type: option, value: value.target.value }))
     }
 
     const handleChangeDate = (date, dateString) => {
@@ -78,10 +79,14 @@ export const ModalEdit = () => {
 
     return (
         <div>
-            <ParentTask
-                name={currentTask.parentname}
-                id={currentTask.parentid}
-            />
+            {
+                currentTask.type !== 'проект'
+                    ? <ParentTask
+                        name={currentTask.parentname}
+                        id={currentTask.parentid}
+                    />
+                    : null
+            }
             <div>
                 <div className='flex'>
                     <Do task={currentTask} />
@@ -95,15 +100,6 @@ export const ModalEdit = () => {
             <div className='input_block'>
                 <div className='input_div'>
                     <div>Тип задачи</div>
-                    {/* <Select
-                        onChange={value => handleChangeType(value, 'type')}
-                        value={currentTask.type}
-                        style={{ width: 200 }}
-                        size='large'
-                    >
-                        <Option value="задача">задача</Option>
-                        <Option value="проект">проект</Option>
-                    </Select> */}
                     <Radio.Group onChange={value => handleChangeType(value, 'type')} value={currentTask.type}>
                         <Radio value={"задача"}>задача</Radio>
                         <Radio value={"проект"}>проект</Radio>

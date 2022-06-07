@@ -12,7 +12,8 @@ import './Tasks.css'
 import { Task } from '../Task/Task';
 import { API } from '../../api/tasks';
 import { useDispatch, useSelector } from 'react-redux';
-import { changePlan, getPlanTasksThunk, getTasksThunk, selectTasks } from '../../app/taskReducer';
+import { changePlan, selectTasks } from '../../app/taskReducer';
+import {  getPlanTasksThunk, getTasksThunk } from '../../app/thunks';
 
 
 

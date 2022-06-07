@@ -7,6 +7,8 @@ import { ModalNew } from './ModalNew';
 import './ModalForm.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTasks, closeModal } from '../../app/taskReducer';
+import { ProjectForm } from './ProjectForm';
+import { TaskForm } from './TaskForm';
 
 const customStyles = {
     content: {
@@ -20,10 +22,22 @@ const customStyles = {
     }
 };
 
+
+const modals = {
+    project: ProjectForm,
+    task: TaskForm,
+    new: ModalNew,
+};
+
+
 export const ModalForm = () => {
 
     const { modalIsOpen, typeOfModal } = useSelector(selectTasks)
     const dispatch = useDispatch()
+
+    const ModalComponent = modals[typeOfModal];
+
+
 
     return (
         <Modal
@@ -32,9 +46,10 @@ export const ModalForm = () => {
             ariaHideApp={false}
             style={customStyles}
         >
-            {
+            <ModalComponent />
+            {/* {
                 typeOfModal === 'new' ? <ModalNew /> : <ModalEdit />
-            }
+            } */}
         </Modal>
     )
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { addSubtaskThunk } from '../../app/taskReducer';
+import { addSubtaskThunk } from '../../app/thunks';
 import { CURRENT_TASK } from '../../config/domain';
 
 import './Subtask.css'

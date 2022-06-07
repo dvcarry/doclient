@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Switch } from 'antd';
+import React, { useEffect } from 'react';
 
-import './Tasks.css'
+// import './Tasks.css'
 
 
-import { Task } from '../Task/Task';
-import { API } from '../../api/tasks';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProjectsThunk, getTodayTasksThunk, selectTasks } from '../../app/taskReducer';
-import { BALANCE } from '../../config/domain';
-import { Project } from '../Project/Project';
+import { selectTasks } from '../app/taskReducer';
+import { getProjectsThunk } from '../app/thunks';
+import { BALANCE } from '../config/domain';
+import { Project } from '../components/Project/Project';
 
 
 
@@ -46,26 +44,12 @@ export const Projects = () => {
                                         childname={task.childname}
                                         childdate={task.childdate}
                                     />
-                                    // <Task
-                                    //     key={task.id}
-                                    //     index={index}
-                                    //     value={task}
-                                    // />
                                 ))
                             }
                         </div>
                     )
                 })
             }
-            {/* {
-                projects.map((task, index) => (
-                    <Task
-                        key={task.id}
-                        index={index}
-                        value={task}
-                    />
-                ))
-            } */}
         </div>
     )
 }

@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { SortableElement, sortableHandle } from 'react-sortable-hoc';
 
 import { setModal } from '../../app/taskReducer'
+import { MODAL_TYPES } from '../../config/domain';
 import './Subtask.css'
 
 const DragHandle = sortableHandle(() => <span className='draghandler'>:::</span>);
@@ -44,7 +45,7 @@ const Subtask = ({ task, change }) => {
                 <span className='subtask_plan'>{dateFormat}</span>
                 <span
                     className='subtask_go'
-                    onClick={() => dispatch(setModal({ typeOfModal: 'edit', currentTask: task }))}
+                    onClick={() => dispatch(setModal({ typeOfModal: MODAL_TYPES.task, currentTask: task }))}
                 >
                     {'>'}
                 </span>

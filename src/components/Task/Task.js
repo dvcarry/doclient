@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SortableElement, sortableHandle } from 'react-sortable-hoc';
 import moment from 'moment';
 
-import { selectTasks, setModal, upTaskThunk } from '../../app/taskReducer';
+import { selectTasks, setModal,  } from '../../app/taskReducer';
+import { upTaskThunk } from '../../app/thunks';
 import { Do } from '../Do/Do';
 // import { TasksContext } from '../../hooks/useTasks';
 import './index.css'
@@ -58,17 +59,16 @@ export const Task = ({ value, type }) => {
 
     return (
         <div
-            className='task'
-            onClick={() => dispatch(setModal({ typeOfModal: 'edit', currentTask: value }))}
+            className='task'            
         >
             <div className='task_left'>
                 <div className='task_tools'>
-                    <Action type={value.action} />
+                    <Action important={value.important} date={value.date}/>
                     <Do task={value} />
                 </div>
                 <div
                     className='task_name'
-                    // onClick={() => dispatch(setModal({ typeOfModal: 'edit', currentTask: value }))}
+                    onClick={() => dispatch(setModal({ typeOfModal: 'task', currentTask: value }))}
                 >
                     <span
                         className={classes.join(' ')}

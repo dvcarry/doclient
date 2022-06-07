@@ -1,11 +1,11 @@
 import React from 'react';
 import './Action.css'
 
-export const Action = ({ type }) => {
+export const Action = ({ important, date }) => {
 
     const classes = ['action']
-    if (type) {
-        classes.push(type)
+    if (important) {
+        classes.push('important')
     }
 
     return (

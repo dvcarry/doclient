@@ -1,8 +1,5 @@
 export const taskFilter = ['все', "задача", "проект", "привычка", "другое"]
 
-export const RELAX_FOR_HOUR = 10
-
-export const START_TIME_IN_MINUTES = 480
 
 export const OPTIONS = {
     type: [
@@ -60,3 +57,9 @@ export const TASK_TYPES = {
 export const DATE_CONSTANTS = [
     { eng: 'today', ru: 'сегодня', days: 0 }, { eng: 'tomorrow', ru: 'завтра', days: 1 }, { eng: 'aftertomorrow', ru: 'послезавтра', days: 2 }
 ]
+
+export const MODAL_TYPES = {
+    new: 'new',
+    project: 'project',
+    task: 'task'
+}

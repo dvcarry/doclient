@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Select } from 'antd';
 
-import { selectTasks, getProjectsThunk, changeCurrentTask, getProjectThunk, setModal } from '../../app/taskReducer';
+import { selectTasks, changeCurrentTask, setModal } from '../../app/taskReducer';
+import { getProjectsThunk, getProjectThunk } from '../../app/thunks';
 import './ParentTask.css'
 
 
@@ -24,9 +25,8 @@ export const ParentTask = ({ id, name }) => {
         dispatch(changeCurrentTask({ type: 'child', value }))
     }
 
-    const clickHandler = async () => {
-        const task = await dispatch(getProjectThunk(id))
-        dispatch(setModal({typeOfModal: 'edit', currentTask: task})) 
+    const clickHandler = () => {
+        dispatch(getProjectThunk(id))
     }
 
     const { Option } = Select;

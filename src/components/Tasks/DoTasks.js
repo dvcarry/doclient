@@ -7,7 +7,8 @@ import './Tasks.css'
 import { Task } from '../Task/Task';
 import { API } from '../../api/tasks';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTodayTasksThunk, selectTasks } from '../../app/taskReducer';
+import { selectTasks } from '../../app/taskReducer';
+import { getTodayTasksThunk } from '../../app/thunks';
 
 
 

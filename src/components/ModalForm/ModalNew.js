@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Button } from 'antd';
 
-import { addTaskThunk, selectTasks } from '../../app/taskReducer';
+import { selectTasks } from '../../app/taskReducer';
+import { addTaskThunk } from '../../app/thunks';
 
 import './ModalForm.css'
 

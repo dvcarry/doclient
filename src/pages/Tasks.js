@@ -1,19 +1,21 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { selectTasks, getTasksThunk } from '../app/taskReducer';
+import { selectTasks } from '../app/taskReducer';
+import { getTasksThunk } from '../app/thunks';
 import { Task } from '../components/Task/Task';
 import { TASK_TYPES } from '../config/domain';
-import { getDatesForPeriod } from '../config/helpers';
+import { filterTodayTasks, getDatesForPeriod } from '../config/helpers';
 
 import './routes.css'
 
 
 
-export const Plan = () => {
+export const Tasks = () => {
 
     const { tasks, filtertype, search } = useSelector(selectTasks)
     const dispatch = useDispatch()
+
 
     // if (search !== '') {
     //     planTasks = tasks.filter(task => task.name.toLowerCase().includes(search.toLowerCase()))
@@ -21,7 +23,8 @@ export const Plan = () => {
 
     const dates = getDatesForPeriod(14)
 
-    const todayTasks = tasks.filter(task => task.plan === 'today')
+    // const todayTasks = tasks.filter(task => moment(task.date) <= today)
+    const todayTasks = filterTodayTasks(tasks)
     const inboxTasks = tasks.filter(task => !task.date)
     const otherTasks = tasks.filter(task => task.date && task.plan !== 'today')
 
