@@ -18,7 +18,7 @@ import './ModalForm.css'
 export const TaskForm = () => {
 
     const { Option } = Select;
-    const { currentTask, tasks, isFetching } = useSelector(selectTasks)
+    const { currentTask, isFetching } = useSelector(selectTasks)
 
     const dispatch = useDispatch()
 
@@ -27,17 +27,13 @@ export const TaskForm = () => {
         dispatch(changeCurrentTask({ type: 'name', value: e.target.value }))
     }
 
-    const handleChangeType = (value) => {
-        dispatch(changeCurrentTask({ type: 'type', value: value.target.value }))
-    }
-
-    const handleChangeImportant = value => {
-    console.log("🚀 ~ file: TaskForm.js ~ line 35 ~ handleChangeImportant ~ value", value)
-        dispatch(changeCurrentTask({ type: 'important', value }))
-    }
-
-    const handleChangeBalance = (value) => {
-        dispatch(changeCurrentTask({ type: 'balance', value }))
+    const handleChangeData = (value, type) => {
+        if (value.target) {
+            dispatch(changeCurrentTask({ type, value: value.target.value }))
+        } else {
+            dispatch(changeCurrentTask({ type, value }))
+        }
+        
     }
 
     const handleChangeDate = (date, dateString) => {
@@ -56,18 +52,15 @@ export const TaskForm = () => {
     // }
 
     const deleteHandler = () => {
-        dispatch(deleteTaskThunk(currentTask.id))
+        dispatch(deleteTaskThunk(currentTask.id, currentTask.child))
     }
 
-    const saveCurrentTask = () => {
-        if (currentTask.balance) {
-            dispatch(saveTaskThunk(currentTask))
+    const saveCurrentTask = () => {  
+        if (!currentTask.balance && currentTask.child === 0) {
+          return  
         }      
+        dispatch(saveTaskThunk(currentTask))
     }
-
-
-    const parentTasks = tasks.find(task => task.id === currentTask.child)
-
 
     return (
         <div>
@@ -90,7 +83,7 @@ export const TaskForm = () => {
 
                 <div className='input_div'>
                     <div>Тип задачи</div>
-                    <Radio.Group onChange={handleChangeType} value={currentTask.type}>
+                    <Radio.Group onChange={value => handleChangeData(value, 'type')} value={currentTask.type}>
                         <Radio value={"задача"}>задача</Radio>
                         <Radio value={"проект"}>проект</Radio>
                     </Radio.Group>
@@ -99,7 +92,7 @@ export const TaskForm = () => {
                 <div className='input_div'>
                     <div>Сфера жизни</div>
                     <Select
-                        onChange={handleChangeBalance}
+                        onChange={value => handleChangeData(value, 'balance')}
                         value={currentTask.balance}
                         style={{ width: 200 }}
                         size='large'
@@ -118,11 +111,11 @@ export const TaskForm = () => {
             <div className='input_block'>
                 <div className='input_div'>
                     <div>Цель</div>
-                    <Switch defaultChecked={currentTask.goal} onChange={value => handleChangeType(value, 'goal')} />
+                    <Switch defaultChecked={currentTask.goal} onChange={value => handleChangeData(value, 'goal')} />
                 </div>
                 <div className='input_div'>
                     <div>Важно</div>
-                    <Switch defaultChecked={currentTask.important} onChange={handleChangeImportant} />
+                    <Switch defaultChecked={currentTask.important} onChange={value => handleChangeData(value, 'important')} />
                 </div>
             </div>
             {
@@ -134,6 +127,7 @@ export const TaskForm = () => {
                                 // value={currentTask.date ? moment(currentTask.date, 'YYYY-MM-DD') : null}
                                 value={currentTask.date ? moment(currentTask.date) : null}
                                 onChange={handleChangeDate}
+                                // onChange={value => handleChangeData(value, 'date')}
                                 style={{ width: 200 }}
                                 size='large'
                             />

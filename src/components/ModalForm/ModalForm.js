@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectTasks, closeModal } from '../../app/taskReducer';
 import { ProjectForm } from './ProjectForm';
 import { TaskForm } from './TaskForm';
+import { DayNew } from './DayNew';
 
 const customStyles = {
     content: {
@@ -27,6 +28,7 @@ const modals = {
     project: ProjectForm,
     task: TaskForm,
     new: ModalNew,
+    day: DayNew,
 };
 
 

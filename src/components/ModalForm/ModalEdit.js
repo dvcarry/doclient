@@ -62,7 +62,7 @@ export const ModalEdit = () => {
     // }
 
     const deleteHandler = () => {
-        dispatch(deleteTaskThunk(currentTask.id))
+        dispatch(deleteTaskThunk(currentTask.id, currentTask.child))
     }
 
     const saveCurrentTask = () => {

@@ -109,3 +109,9 @@
     color: red;
     font-weight: 700;
 }
+
+.task-done {
+    background-color: transparent;
+    box-shadow: none;
+    border: 1px solid lightgray;
+}

@@ -4,30 +4,29 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { Button } from 'antd';
 
 import { selectTasks } from '../../app/taskReducer';
-import { addTaskThunk } from '../../app/thunks';
+import { addDayTextThunk, addTaskThunk } from '../../app/thunks';
 
 import './ModalForm.css'
 
-export const ModalNew = () => {
+export const DayNew = () => {
 
-    const [name, setName] = useState('')
+    const [text, setText] = useState('')
 
     const { currentTask, isFetching } = useSelector(selectTasks)
 
     const dispatch = useDispatch()
 
     const saveKeyHandler = event => {
-        if (event.charCode === 13) {
-            event.preventDefault();
-            if (name !== '') {
-                dispatch(addTaskThunk({ ...currentTask, name: name }))
+        if (event.charCode === 13 && event.ctrlKey) {
+            if (text !== '') {
+                dispatch(addDayTextThunk(text))
             }
         }
     }
 
     const saveHandler = () => {
-        if (name !== '') {
-            dispatch(addTaskThunk({ ...currentTask, name: name }))
+        if (text !== '') {
+            dispatch(addDayTextThunk(text))
         }
     }
 
@@ -36,17 +35,11 @@ export const ModalNew = () => {
             onKeyPress={saveKeyHandler}
         >
             <TextareaAutosize
-                value={name}
+                value={text}
                 className='input_name'
-                onChange={e => setName(e.target.value)}
+                onChange={e => setText(e.target.value)}
                 autoFocus
             />
-            {/* <input
-                value={name}
-                className='input_name'
-                onChange={e => setName(e.target.value)}
-                autoFocus
-            /> */}
             <div className='button_block'>
                 <Button
                     onClick={saveHandler}

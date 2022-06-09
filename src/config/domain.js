@@ -51,7 +51,7 @@ export const PLANS = ['today', 'week', 'upcoming', "later"]
 
 export const TASK_TYPES = {
     plan: 'plan',
-    today: 'today'
+    done: 'done'
 }
 
 export const DATE_CONSTANTS = [
@@ -61,5 +61,6 @@ export const DATE_CONSTANTS = [
 export const MODAL_TYPES = {
     new: 'new',
     project: 'project',
-    task: 'task'
+    task: 'task',
+    day: 'day',
 }

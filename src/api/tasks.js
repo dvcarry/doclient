@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://82.146.40.11:5002/api/';
-// axios.defaults.baseURL = 'http://localhost:5002/api/';
+// axios.defaults.baseURL = 'http://82.146.40.11:5002/api/';
+axios.defaults.baseURL = 'http://localhost:5002/api/';
 
 export const API = {
     project: {
@@ -16,6 +16,24 @@ export const API = {
         async getProject(project_id) {
             try {
                 const { data } = await axios.get('projects/' + project_id)
+                return data
+            } catch (error) {
+                console.log(error)
+            }
+        },
+    },
+    days: {
+        async addDayText(text) {
+            try {
+                const { data } = await axios.post('days', { text })
+                return data
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async getDay() {
+            try {
+                const { data } = await axios.get('days')
                 return data
             } catch (error) {
                 console.log(error)

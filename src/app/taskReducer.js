@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import arrayMove from 'array-move';
-import { MODAL_TYPES } from "../config/domain";
+import { CURRENT_TASK, MODAL_TYPES } from "../config/domain";
 
 
 
@@ -15,9 +15,10 @@ export const tasksSlice = createSlice({
         modalIsOpen: false,
         typeOfModal: 'new',
         todaytasks: [],
-        
+        doneTasks: [],
+        daytext: false
         // today: [],
-        // doneTasks: [],
+        
         // week: [],
         // plan: 'today',
         // filtertype: 'plan',
@@ -38,6 +39,14 @@ export const tasksSlice = createSlice({
         setTodayTasks: (state, action) => {
             state.todaytasks = action.payload
             // state.doneTasks = action.payload.doneTasks
+        },
+        setDoneTasks: (state, action) => {
+            state.doneTasks = action.payload
+        },
+        setDay: (state, action) => {
+            if (action.payload) {
+                state.daytext = true
+            }            
         },
         saveTask: (state, action) => {
             const newTasks = state.tasks.map(task => task.id === state.currentTask.id ? ({...state.currentTask}) : task)
@@ -67,9 +76,10 @@ export const tasksSlice = createSlice({
         doTask: (state, action) => {
 
             const { id, parent } = action.payload
-
+            const task = state.tasks.find(task => task.id === id)
             const newTasks = state.tasks.filter(task => task.id !== id)
             state.tasks = newTasks
+            state.doneTasks = [...state.doneTasks, task]
 
             // открыть родителя если это была подзадача
             // const parentTask = state.tasks.find(task => task.id === parent)
@@ -88,8 +98,13 @@ export const tasksSlice = createSlice({
         setModal: (state, action) => {
             state.modalIsOpen = true
             state.typeOfModal = action.payload.typeOfModal
-            const subtasks = state.tasks.filter(task => task.child === action.payload.currentTask.id && !task.done)
-            state.currentTask = { ...action.payload.currentTask, subtasks: subtasks }
+            // const subtasks = state.tasks.filter(task => task.child === action.payload.currentTask.id && !task.done)
+            // state.currentTask = { ...action.payload.currentTask, subtasks: subtasks }
+        },
+        openNewTask: (state, action) => {
+            state.modalIsOpen = true
+            state.typeOfModal = MODAL_TYPES.new
+            state.currentTask = CURRENT_TASK
         },
         setProject: (state, action) => {
             state.modalIsOpen = true
@@ -126,16 +141,18 @@ export const tasksSlice = createSlice({
 
 export const { toggleFetching,
     setTasks, addTask, deleteTask, saveTask, doTask,
-    setPlanTasks, setTodayTasks,
-    setPlan,
+    setPlanTasks, setTodayTasks, setDoneTasks,
     setProjects, deleteProject, setProject,
-    upTask,
     setCurrentTask, changeCurrentTask,
     addSubtask,
+    openNewTask,
     setModal, closeModal,
-    setCurrentDay, setCurrentPlan,
-    setSearch,
-    changePlan,    
+    setDay,
+    // setPlan,
+    // upTask,
+    // setCurrentDay, setCurrentPlan,
+    // setSearch,
+    // changePlan,    
 } = tasksSlice.actions;
 
 

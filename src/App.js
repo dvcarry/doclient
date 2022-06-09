@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 
-import { selectTasks, setModal } from './app/taskReducer'
+import { openNewTask, selectTasks, setModal } from './app/taskReducer'
 import { Plan } from './pages/Tasks';
 import { Focus } from './pages/Focus';
 import { ModalForm } from './components/ModalForm/ModalForm';
@@ -20,6 +20,7 @@ import { MainHeader } from './components/MainHeader/MainHeader';
 import { Tasks } from './pages/Tasks';
 import { Projects } from './pages/Projects';
 import { Today } from './pages/Today';
+import { getDayThunk } from './app/thunks';
 
 function App() {
 
@@ -30,8 +31,18 @@ function App() {
   };
 
   const handlers = {
-    MOVE_UP: event => dispatch(setModal({ typeOfModal: 'new', currentTask: CURRENT_TASK }))
+    MOVE_UP: event => dispatch(openNewTask())
+      // setModal({ typeOfModal: 'new', currentTask: CURRENT_TASK }))
+    // MOVE_UP: event => dispatch(setModal({ typeOfModal: 'new', currentTask: CURRENT_TASK }))
   };
+
+  const getData = async () => {
+    await dispatch(getDayThunk())
+  }
+
+  useEffect(() => {
+    getData()
+  })
 
   return (
     <GlobalHotKeys keyMap={keyMap} handlers={handlers}>
