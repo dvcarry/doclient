@@ -1,40 +1,64 @@
-import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-// import './Tasks.css'
-
-
-import { useDispatch, useSelector } from 'react-redux';
-import { selectTasks } from '../app/taskReducer';
-import { getProjectsThunk } from '../app/thunks';
+import { selectTasks } from '../redux/taskReducer';
 import { BALANCE } from '../config/domain';
 import { Project } from '../components/Project/Project';
+import { useState } from 'react';
 
 
 
 
 export const Projects = () => {
 
+    const [filter, setFilter] = useState(BALANCE[0])
+
     const { projects } = useSelector(selectTasks)
 
-    const dispatch = useDispatch()
+    // if (projects.length === 0) return null
 
-    useEffect(() => {
-        const getTasks = async () => {
-            await dispatch(getProjectsThunk())
-        }
-        getTasks()
-    }, [])
+    const navClickHandler = event => {
+        setFilter(event.target.textContent.toLowerCase())
+    }
 
-    if (projects.length === 0) return null
+
+
+    const filteredProjects = projects.filter(project => project.balance === filter)
 
     return (
         <div>
+            <div className='block'>
+                {
+                    BALANCE.map(item => (
+                        <span
+                            className={`nav${filter === item ? ' nav-active' : ''}`}
+                            onClick={navClickHandler}
+                            key={item}
+                        >
+                            {item.toUpperCase()}
+                        </span>)
+                    )
+                }
+            </div>
+
             {
+                filteredProjects.map(project => {
+                    return (
+                        <Project
+                            key={project.id}
+                            // index={index}
+                            value={project}
+                            childname={project.childname}
+                            childdate={project.childdate}
+                        />
+                    )
+                })
+            }
+            {/* {
                 BALANCE.map(item => {
                     const tasks = projects.filter(task => task.balance === item)
                     return (
-                        <div className='plantask_div'>
-                            <div className='plantask_date'>{item}</div>
+                        <div className='block' key={item}>
+                            <h3>{item.toUpperCase()}</h3>
                             {
                                 tasks.map((task, index) => (
                                     <Project
@@ -49,7 +73,7 @@ export const Projects = () => {
                         </div>
                     )
                 })
-            }
+            } */}
         </div>
     )
 }

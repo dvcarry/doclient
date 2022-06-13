@@ -50,9 +50,9 @@
     margin-left: 5px;
 }
 
-.goal {
+.task_goal {
     color: #f06c34;
-    font-weight: 700;
+    /* font-weight: 700; */
 }
 
 .task_tag {
@@ -89,6 +89,10 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+}
+
+.task_name:hover {
+    font-weight: 700;
 }
 
 .day_today {

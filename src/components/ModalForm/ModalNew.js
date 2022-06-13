@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Button } from 'antd';
 
-import { selectTasks } from '../../app/taskReducer';
-import { addTaskThunk } from '../../app/thunks';
+import { selectTasks } from '../../redux/taskReducer';
+import { addTaskThunk } from '../../redux/tasksThunks';
 
 import './ModalForm.css'
 
@@ -37,7 +37,7 @@ export const ModalNew = () => {
         >
             <TextareaAutosize
                 value={name}
-                className='input_name'
+                className='inputtext inputtext-name'
                 onChange={e => setName(e.target.value)}
                 autoFocus
             />

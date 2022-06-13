@@ -1,16 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SortableElement, sortableHandle } from 'react-sortable-hoc';
-import moment from 'moment';
 
-import { selectTasks, setModal } from '../../app/taskReducer';
-import { getProjectThunk, upTaskThunk } from '../../app/thunks';
-import { Do } from '../Do/Do';
-// import { TasksContext } from '../../hooks/useTasks';
-// import './index.css'
+import { selectTasks } from '../../redux/taskReducer';
+import { getProjectThunk } from '../../redux/projectsThunks';
+
 import { Action } from '../Action/Action';
-import { TASK_TYPES } from '../../config/domain';
-import { useCurrentTask } from '../../hooks/useCurrentTask';
 
 
 export const Project = ({ value, type, childname, childdate }) => {
@@ -28,7 +22,7 @@ export const Project = ({ value, type, childname, childdate }) => {
 
     let classes = ['task_name']
     if (value.goal) {
-        classes.push('goal')
+        classes.push('task_goal')
     }
 
     // if (value.plan === 'today' && moment(today).isAfter(new Date(value.date), 'day')) {
@@ -91,5 +85,3 @@ export const Project = ({ value, type, childname, childdate }) => {
         </div>
     )
 }
-
-// export default SortableElement(Task)

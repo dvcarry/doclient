@@ -1,10 +1,11 @@
 .subtask {
-    padding: 5px 10px;
+    padding: 7px 12px;
     border: 1px solid lightgray;
     border-radius: 5px;
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
+    cursor: pointer;
 }
 
 .subtask_input {
@@ -18,12 +19,8 @@
     align-items: center;
 }
 
-.subtask_go {
-    cursor: pointer;
-    padding-left: 15px;
-}
 
-.subtask_go:hover {
+.subtask:hover {
     color: #f06c34;
 
 }

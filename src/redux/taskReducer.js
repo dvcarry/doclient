@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit"
-import arrayMove from 'array-move';
 import { CURRENT_TASK, MODAL_TYPES } from "../config/domain";
 
 
@@ -8,6 +7,7 @@ import { CURRENT_TASK, MODAL_TYPES } from "../config/domain";
 export const tasksSlice = createSlice({
     name: 'tasks',
     initialState: {
+        goals: [],
         tasks: [],
         projects: [],
         currentTask: null,
@@ -16,7 +16,8 @@ export const tasksSlice = createSlice({
         typeOfModal: 'new',
         todaytasks: [],
         doneTasks: [],
-        daytext: false
+        daytext: false,
+        error: ''
         // today: [],
         
         // week: [],
@@ -35,11 +36,12 @@ export const tasksSlice = createSlice({
         },
         setTasks: (state, action) => {
             state.tasks = action.payload
+            state.isFetching = false
         },
-        setTodayTasks: (state, action) => {
-            state.todaytasks = action.payload
-            // state.doneTasks = action.payload.doneTasks
-        },
+        // setTodayTasks: (state, action) => {
+        //     state.todaytasks = action.payload
+        //     // state.doneTasks = action.payload.doneTasks
+        // },
         setDoneTasks: (state, action) => {
             state.doneTasks = action.payload
         },
@@ -48,12 +50,16 @@ export const tasksSlice = createSlice({
                 state.daytext = true
             }            
         },
-        saveTask: (state, action) => {
+        saveTask: (state) => {
             const newTasks = state.tasks.map(task => task.id === state.currentTask.id ? ({...state.currentTask}) : task)
             state.tasks = newTasks
+            state.isFetching = false
+            state.modalIsOpen = false
         },
         addTask: (state, action) => {
             state.tasks = [...state.tasks, action.payload]
+            state.isFetching = false
+            state.modalIsOpen = false
         },
         deleteTask: (state, action) => {
             const newTasks = state.tasks.filter(task => task.id !== state.currentTask.id)
@@ -91,6 +97,7 @@ export const tasksSlice = createSlice({
             } else {
                 state.modalIsOpen = false
             }
+            state.isFetching = false
         },
         setCurrentTask: (state, action) => {
             state.currentTask = action.payload
@@ -108,7 +115,13 @@ export const tasksSlice = createSlice({
         },
         setProject: (state, action) => {
             state.modalIsOpen = true
-            state.typeOfModal = 'project'
+            state.typeOfModal = MODAL_TYPES.project
+            state.currentTask = action.payload
+            state.isFetching = false
+        },
+        setTask: (state, action) => {
+            state.modalIsOpen = true
+            state.typeOfModal = MODAL_TYPES.task
             state.currentTask = action.payload
             state.isFetching = false
         },
@@ -123,6 +136,7 @@ export const tasksSlice = createSlice({
             state.tasks = [...state.tasks, action.payload]
             // state.tasks[action.payload.plan] = [...state.tasks[action.payload.plan], action.payload]
             state.currentTask.subtasks = [...state.currentTask.subtasks, action.payload]
+            state.isFetching = false
         },
         setCurrentDay: (state, action) => {
             state.date = action.payload
@@ -132,7 +146,16 @@ export const tasksSlice = createSlice({
         },
         setSearch: (state, action) => {
             state.search = action.payload
-        }
+        },
+        setGoals: (state, action) => {
+            state.goals = action.payload  
+            state.isFetching = false        
+        },
+        setError: (state, action) => {
+            state.error = action.payload  
+            state.isFetching = false        
+        },
+        
     },
 });
 
@@ -148,6 +171,9 @@ export const { toggleFetching,
     openNewTask,
     setModal, closeModal,
     setDay,
+    setTask,
+    setGoals,
+    setError
     // setPlan,
     // upTask,
     // setCurrentDay, setCurrentPlan,

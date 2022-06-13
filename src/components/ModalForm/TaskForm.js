@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { ParentTask } from '../ParentTask/ParentTask';
 import { Do } from '../Do/Do';
-import { changeCurrentTask, selectTasks } from '../../app/taskReducer';
-import { deleteTaskThunk, saveTaskThunk } from '../../app/thunks';
+import { changeCurrentTask, selectTasks } from '../../redux/taskReducer';
+import { deleteTaskThunk, saveTaskThunk } from '../../redux/tasksThunks';
 import { getDateFromConstant } from '../../config/helpers';
 import { DATE_CONSTANTS } from '../../config/domain';
 
@@ -52,7 +52,7 @@ export const TaskForm = () => {
     // }
 
     const deleteHandler = () => {
-        dispatch(deleteTaskThunk(currentTask.id, currentTask.child))
+        dispatch(deleteTaskThunk(currentTask.id, currentTask.parent))
     }
 
     const saveCurrentTask = () => {  
@@ -73,7 +73,7 @@ export const TaskForm = () => {
                 <div className='flex'>
                     <Do task={currentTask} />
                     <TextareaAutosize
-                        className='input_name'
+                        className='inputtext inputtext-name'
                         value={currentTask.name}
                         onChange={handleChangeName}
                     />

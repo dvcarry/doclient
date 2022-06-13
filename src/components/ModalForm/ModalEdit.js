@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { sortableContainer } from 'react-sortable-hoc';
 
 import { ParentTask } from '../ParentTask/ParentTask';
-import Subtask from '../Subtask/Subtask';
+import { Subtask } from '../Subtask/Subtask';
 import { SubtaskEdit } from '../Subtask/SubtaskEdit';
 import { Do } from '../Do/Do';
 

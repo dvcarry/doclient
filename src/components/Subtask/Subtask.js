@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { SortableElement, sortableHandle } from 'react-sortable-hoc';
 
-import { setModal } from '../../app/taskReducer'
+import { getTaskThunk } from '../../redux/tasksThunks';
 import { MODAL_TYPES } from '../../config/domain';
 import './Subtask.css'
 
-const DragHandle = sortableHandle(() => <span className='draghandler'>:::</span>);
+// const DragHandle = sortableHandle(() => <span className='draghandler'>:::</span>);
 
 
-const Subtask = ({ task, change }) => {
+export const Subtask = ({ task, change }) => {
 
     const [input, setInput] = useState(task.name)
     const dispatch = useDispatch()
+
+    const clickHandler = () => {
+        dispatch(getTaskThunk(task.id))
+    }
 
 
     const handleBlur = () => {
@@ -26,11 +29,14 @@ const Subtask = ({ task, change }) => {
         const dateFormatArray = task.date.split('-')
         dateFormat = dateFormatArray[2] + '.' + dateFormatArray[1]
     }
-    
+
 
     return (
-        <div className='subtask'>
-            <DragHandle />
+        <div
+            className='subtask'
+            onClick={clickHandler}
+        >
+            {/* <DragHandle /> */}
             <span>
                 {task.name}
             </span>
@@ -43,16 +49,10 @@ const Subtask = ({ task, change }) => {
             /> */}
             <div className='subtask_info'>
                 <span className='subtask_plan'>{dateFormat}</span>
-                <span
-                    className='subtask_go'
-                    onClick={() => dispatch(setModal({ typeOfModal: MODAL_TYPES.task, currentTask: task }))}
-                >
-                    {'>'}
-                </span>
             </div>
 
         </div>
     );
 };
 
-export default SortableElement(Subtask)
+// export default SortableElement(Subtask)

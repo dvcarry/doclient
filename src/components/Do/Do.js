@@ -2,8 +2,8 @@ import { Spin } from 'antd';
 import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { selectTasks } from '../../app/taskReducer';
-import { doTaskThunk } from '../../app/thunks';
+import { selectTasks } from '../../redux/taskReducer';
+import { doTaskThunk } from '../../redux/tasksThunks';
 
 import './Do.css'
 

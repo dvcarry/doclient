@@ -1,11 +1,18 @@
-.input_name {
+.inputtext {
     outline: none;
     border: none;
-    font-size: 20px;
-    font-weight: 700;
     width: 100%;
     resize: none;
     overflow-y: hidden;
+}
+
+.inputtext-name {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.inputtext-day {
+    font-size: 16px;
 }
 
 .input_block {

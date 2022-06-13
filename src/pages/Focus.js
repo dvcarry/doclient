@@ -15,7 +15,6 @@ export const Focus = () => {
     const { tasks, currentTask, isFetching } = useSelector(selectTasks)
 
     const [time, setTime] = useState(0)
-    console.log("🚀 ~ file: Focus.js ~ line 17 ~ Focus ~ time", time)
 
     // let timer = new moment.duration(1000).timer();
 

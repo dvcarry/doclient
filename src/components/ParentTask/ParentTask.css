@@ -2,3 +2,7 @@
     cursor: pointer;
     text-decoration: underline;
 }
+
+.parenttask:hover {
+    color: #f06c34;
+}

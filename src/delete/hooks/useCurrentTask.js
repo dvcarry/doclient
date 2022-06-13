@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { selectTasks,changeCurrentTask, setModal } from '../app/taskReducer';
-import { getProjectsThunk, getProjectThunk } from '../app/thunks';
+import { selectTasks,changeCurrentTask, setModal } from '../../app/taskReducer';
+import { getProjectsThunk, getProjectThunk } from '../../app/thunks';
 // import { selectTasks, getProjectsThunk, changeCurrentTask, getProjectThunk, setModal } from '../../app/taskReducer';
 
 

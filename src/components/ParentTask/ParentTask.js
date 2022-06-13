@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Select } from 'antd';
 
-import { selectTasks, changeCurrentTask, setModal } from '../../app/taskReducer';
-import { getProjectsThunk, getProjectThunk } from '../../app/thunks';
+import { selectTasks, changeCurrentTask } from '../../redux/taskReducer';
+import { getProjectsThunk, getProjectThunk } from '../../redux/projectsThunks';
 import './ParentTask.css'
 
 
@@ -21,8 +21,13 @@ export const ParentTask = ({ id, name }) => {
         setIsParent(true)
     }
 
-    const handleChangeType = (value) => {
-        dispatch(changeCurrentTask({ type: 'child', value }))
+    const handleChangeType = (value, values) => {
+        // dispatch(changeCurrentTask({ type: 'parentid', value: values.value }))
+        dispatch(changeCurrentTask({ type: 'parent', value: values.value }))
+        dispatch(changeCurrentTask({ type: 'parentname', value: values.children }))
+        const project = projects.find(project => project.id === value)
+        dispatch(changeCurrentTask({ type: 'balance', value: project.balance }))
+        dispatch(changeCurrentTask({ type: 'goal', value: project.goal }))
     }
 
     const clickHandler = () => {

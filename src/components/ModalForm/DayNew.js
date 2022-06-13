@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Button } from 'antd';
 
-import { selectTasks } from '../../app/taskReducer';
-import { addDayTextThunk, addTaskThunk } from '../../app/thunks';
+import { selectTasks } from '../../redux/taskReducer';
+// import { addTaskThunk } from '../../redux/thunks';
+import { addDayTextThunk } from '../../redux/daysThunks';
 
 import './ModalForm.css'
 
@@ -36,7 +37,7 @@ export const DayNew = () => {
         >
             <TextareaAutosize
                 value={text}
-                className='input_name'
+                className='inputtext inputtext-day'
                 onChange={e => setText(e.target.value)}
                 autoFocus
             />

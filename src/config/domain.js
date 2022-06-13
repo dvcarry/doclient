@@ -34,7 +34,7 @@ export const CURRENT_TASK = {
     type: 'задача',
     period: 0,
     balance: '',
-    child: 0,
+    parent: 0,
     goal: false,
     today: false,
     repeat: false,

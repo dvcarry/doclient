@@ -1,46 +1,37 @@
-import React, { useState } from 'react';
-import { DatePicker, Select, Button, Radio, Switch } from 'antd';
-import moment from 'moment';
+import { useState } from 'react';
+import { Select, Button, Switch } from 'antd';
 import TextareaAutosize from 'react-textarea-autosize';
 import { useDispatch, useSelector } from 'react-redux';
-import { sortableContainer } from 'react-sortable-hoc';
 
-import { ParentTask } from '../ParentTask/ParentTask';
-import Subtask from '../Subtask/Subtask';
+import { Subtask } from '../Subtask/Subtask';
 import { SubtaskEdit } from '../Subtask/SubtaskEdit';
 import { Do } from '../Do/Do';
 
-import { changeCurrentTask, selectTasks } from '../../app/taskReducer';
-import { deleteProjectThunk, deleteTaskThunk, saveTaskThunk } from '../../app/thunks';
+import { changeCurrentTask, selectTasks } from '../../redux/taskReducer';
+import { saveTaskThunk } from '../../redux/tasksThunks';
+import { deleteProjectThunk } from '../../redux/projectsThunks';
 
 import './ModalForm.css'
-import { getDateFromConstant } from '../../config/helpers';
-import { DATE_CONSTANTS } from '../../config/domain';
 
 
-const SortableContainer = sortableContainer(({ children }) => {
-    return <div>{children}</div>;
-});
 
 
 export const ProjectForm = () => {
 
     const { Option } = Select;
-    const { currentTask, tasks, isplan, isFetching } = useSelector(selectTasks)
+    const { currentTask, tasks, isFetching } = useSelector(selectTasks)
 
     const dispatch = useDispatch()
 
     const [isSubtask, setIsSubtask] = useState(false)
 
     const handleChangeName = e => {
-        changeCurrentTask('name', e.target.value)
+        // changeCurrentTask('name', e.target.value)
         dispatch(changeCurrentTask({ type: 'name', value: e.target.value }))
     }
 
     const handleChangeType = (value, option) => {
-        console.log("🚀 ~ file: ModalEdit.js ~ line 43 ~ handleChangeType ~ value", value, option)
         dispatch(changeCurrentTask({ type: option, value }))
-        // dispatch(changeCurrentTask({ type: option, value: value.target.value }))
     }
 
 
@@ -57,13 +48,13 @@ export const ProjectForm = () => {
     const saveCurrentTask = () => {
         if (currentTask.balance) {
             dispatch(saveTaskThunk(currentTask))
-        }        
+        }
     }
 
-    const sortHandler = async ({ oldIndex, newIndex }) => {
-        // setTasks(tasks => arrayMove(tasks, oldIndex, newIndex))
-        // await API.reindex(plan, oldIndex, newIndex)
-    }
+    // const sortHandler = async ({ oldIndex, newIndex }) => {
+    //     // setTasks(tasks => arrayMove(tasks, oldIndex, newIndex))
+    //     // await API.reindex(plan, oldIndex, newIndex)
+    // }
 
     const parentTasks = tasks.find(task => task.id === currentTask.child)
 
@@ -74,9 +65,10 @@ export const ProjectForm = () => {
                 <div className='flex'>
                     <Do task={currentTask} />
                     <TextareaAutosize
-                        className='input_name'
+                        className='inputtext inputtext-name'
                         value={currentTask.name}
                         onChange={handleChangeName}
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault()}}
                     />
                 </div>
             </div>
@@ -103,12 +95,6 @@ export const ProjectForm = () => {
                     <Switch defaultChecked={currentTask.goal} onChange={value => handleChangeType(value, 'goal')} />
                 </div>
             </div>
-
-            {/* <div className='input_block'>
-
-            </div> */}
-
-
             <div className='subtask_block'>
                 <div>Подзадачи</div>
                 <div
@@ -118,31 +104,25 @@ export const ProjectForm = () => {
                     +
                 </div>
             </div>
-
-            <SortableContainer
-                onSortEnd={sortHandler}
-                useDragHandle
-            >
-                {currentTask.subtasks.map((subtask, index) => (
+            {
+                currentTask.subtasks.map((subtask, index) => (
                     <Subtask
                         task={subtask}
                         key={subtask.id}
                         index={index}
                     />
-                ))}
-            </SortableContainer>
+                ))
+            }
             {
                 isSubtask
                     ? <SubtaskEdit
                         close={() => setIsSubtask(false)}
                         goal={currentTask.goal}
                         balance={currentTask.balance}
-                        child={currentTask.id}
-                        plan='inbox'
+                        parent={currentTask.id}
                     />
                     : null
             }
-
             <div className='button_block'>
                 <Button
                     onClick={saveCurrentTask}

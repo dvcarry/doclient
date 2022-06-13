@@ -1,12 +1,11 @@
 import React from 'react';
 import Modal from 'react-modal';
 
-import { ModalEdit } from './ModalEdit';
 import { ModalNew } from './ModalNew';
 
 import './ModalForm.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { selectTasks, closeModal } from '../../app/taskReducer';
+import { selectTasks, closeModal } from '../../redux/taskReducer';
 import { ProjectForm } from './ProjectForm';
 import { TaskForm } from './TaskForm';
 import { DayNew } from './DayNew';
@@ -39,8 +38,6 @@ export const ModalForm = () => {
 
     const ModalComponent = modals[typeOfModal];
 
-
-
     return (
         <Modal
             isOpen={modalIsOpen}
@@ -49,9 +46,6 @@ export const ModalForm = () => {
             style={customStyles}
         >
             <ModalComponent />
-            {/* {
-                typeOfModal === 'new' ? <ModalNew /> : <ModalEdit />
-            } */}
         </Modal>
     )
 }

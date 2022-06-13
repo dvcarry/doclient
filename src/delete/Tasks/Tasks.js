@@ -7,7 +7,7 @@ import './Tasks.css'
 
 import { taskFilter } from '../../config/domain';
 
-import { Task } from '../Task/Task';
+import { Task } from '../../components/Task/Task';
 import { API } from '../../api/tasks';
 import { useDispatch, useSelector } from 'react-redux';
 import { changePlan, selectTasks } from '../../app/taskReducer';

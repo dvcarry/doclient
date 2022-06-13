@@ -1,5 +1,4 @@
 .mainheader {
-    padding: 10px;
     display: flex;
     justify-content: space-between;
     height: 100px;
@@ -9,8 +8,6 @@
     margin-right: 10px;
 }
 
-.timer {
-    margin-right: 20px;
-    font-size: large;
+.active {
     font-weight: 700;
 }

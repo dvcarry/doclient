@@ -1,0 +1,28 @@
+.goal {
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.goal_headingblock {
+    display: flex;
+    justify-content: space-between;
+}
+
+.goal_name {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.goal_balance {
+    color: gray;
+}
+
+.goal_description {
+    color: gray;
+}

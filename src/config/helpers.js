@@ -35,3 +35,8 @@ export const filterTodayTasks = tasks => {
     .filter(task => moment(task.date) <= today)
     .sort(task => task.important ? -1 : 1) 
 }
+
+export const getAuthToken = () => {
+    const token = localStorage.getItem('do')
+    return token
+}
