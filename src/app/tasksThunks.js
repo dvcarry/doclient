@@ -35,13 +35,6 @@ export const getDoneTasksThunk = () => async dispatch => {
 }
 
 
-
-
-
-
-
-
-
 export const saveTaskThunk = (task) => dispatch => {
     dispatch(toggleFetching())
     API.editTask(task)

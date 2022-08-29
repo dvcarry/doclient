@@ -21,12 +21,4 @@ export const addDayTextThunk = (text) => async dispatch => {
         dispatch(setError(error.response.statusText))
     }
 
-
-
-
-    // dispatch(toggleFetching())
-    // await API.days.addDayText(text)
-    // dispatch(setDay(true))
-    // dispatch(closeModal())
-    // dispatch(toggleFetching())
 }

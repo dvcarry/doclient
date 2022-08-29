@@ -33,7 +33,7 @@ export const TaskForm = () => {
         } else {
             dispatch(changeCurrentTask({ type, value }))
         }
-        
+
     }
 
     const handleChangeDate = (date, dateString) => {
@@ -55,10 +55,10 @@ export const TaskForm = () => {
         dispatch(deleteTaskThunk(currentTask.id, currentTask.parent))
     }
 
-    const saveCurrentTask = () => {  
+    const saveCurrentTask = () => {
         if (!currentTask.balance && currentTask.child === 0) {
-          return  
-        }      
+            return
+        }
         dispatch(saveTaskThunk(currentTask))
     }
 
@@ -79,47 +79,8 @@ export const TaskForm = () => {
                     />
                 </div>
             </div>
-            <div className='input_block'>
-
-                <div className='input_div'>
-                    <div>Тип задачи</div>
-                    <Radio.Group onChange={value => handleChangeData(value, 'type')} value={currentTask.type}>
-                        <Radio value={"задача"}>задача</Radio>
-                        <Radio value={"проект"}>проект</Radio>
-                    </Radio.Group>
-                </div>
-
-                <div className='input_div'>
-                    <div>Сфера жизни</div>
-                    <Select
-                        onChange={value => handleChangeData(value, 'balance')}
-                        value={currentTask.balance}
-                        style={{ width: 200 }}
-                        size='large'
-                    >
-                        <Option value="работа">работа</Option>
-                        <Option value="проект">проект</Option>
-                        <Option value="развитие">развитие</Option>
-                        <Option value="семья">семья</Option>
-                        <Option value="здоровье">здоровье</Option>
-                        <Option value="быт">быт</Option>
-                        <Option value="отдых">отдых</Option>
-                    </Select>
-                </div>
-            </div>
-
-            <div className='input_block'>
-                <div className='input_div'>
-                    <div>Цель</div>
-                    <Switch defaultChecked={currentTask.goal} onChange={value => handleChangeData(value, 'goal')} />
-                </div>
-                <div className='input_div'>
-                    <div>Важно</div>
-                    <Switch defaultChecked={currentTask.important} onChange={value => handleChangeData(value, 'important')} />
-                </div>
-            </div>
             {
-                currentTask.type !== 'проект'
+                currentTask.date
                     ? <div className='input_block'>
                         <div className='input_div'>
                             <div>Дата</div>
@@ -137,9 +98,74 @@ export const TaskForm = () => {
                                 }
                             </div>
                         </div>
+                        <div className='input_div'>
+                            <div>Важно</div>
+                            <Switch defaultChecked={currentTask.important} onChange={value => handleChangeData(value, 'important')} />
+                        </div>
                     </div>
-                    : null
+                    : <>
+                        <div className='input_block'>
+                            <div className='input_div'>
+                                <div>Тип задачи</div>
+                                <Radio.Group onChange={value => handleChangeData(value, 'type')} value={currentTask.type}>
+                                    <Radio value={"задача"}>задача</Radio>
+                                    <Radio value={"проект"}>проект</Radio>
+                                </Radio.Group>
+                            </div>
+
+                            <div className='input_div'>
+                                <div>Сфера жизни</div>
+                                <Select
+                                    onChange={value => handleChangeData(value, 'balance')}
+                                    value={currentTask.balance}
+                                    style={{ width: 200 }}
+                                    size='large'
+                                >
+                                    <Option value="работа">работа</Option>
+                                    <Option value="проект">проект</Option>
+                                    <Option value="развитие">развитие</Option>
+                                    <Option value="семья">семья</Option>
+                                    <Option value="здоровье">здоровье</Option>
+                                    <Option value="быт">быт</Option>
+                                    <Option value="отдых">отдых</Option>
+                                </Select>
+                            </div>
+                        </div>
+
+                        <div className='input_block'>
+                            <div className='input_div'>
+                                <div>Цель</div>
+                                <Switch defaultChecked={currentTask.goal} onChange={value => handleChangeData(value, 'goal')} />
+                            </div>
+                            <div className='input_div'>
+                                <div>Важно</div>
+                                <Switch defaultChecked={currentTask.important} onChange={value => handleChangeData(value, 'important')} />
+                            </div>
+                        </div>
+
+                        <div className='input_block'>
+                            <div className='input_div'>
+                                <div>Дата</div>
+                                <DatePicker
+                                    // value={currentTask.date ? moment(currentTask.date, 'YYYY-MM-DD') : null}
+                                    value={currentTask.date ? moment(currentTask.date) : null}
+                                    onChange={handleChangeDate}
+                                    // onChange={value => handleChangeData(value, 'date')}
+                                    style={{ width: 200 }}
+                                    size='large'
+                                />
+                                <div>
+                                    {
+                                        DATE_CONSTANTS.map(item => <span key={item.eng} className='date_constant' onClick={() => setDateFromConstants(item.eng)}>{item.ru}</span>)
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </>
             }
+
+
+
 
             <div className='button_block'>
                 <Button

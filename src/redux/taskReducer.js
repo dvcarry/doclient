@@ -17,18 +17,9 @@ export const tasksSlice = createSlice({
         todaytasks: [],
         doneTasks: [],
         daytext: false,
-        error: ''
-        // today: [],
-        
-        // week: [],
-        // plan: 'today',
-        // filtertype: 'plan',
-        
-        
-        
-        // date: '',
-        // isplan: false,
-        // search: ''
+        error: '',
+        breaks: 0,
+        focus: null
     },
     reducers: {
         toggleFetching: state => {
@@ -48,6 +39,8 @@ export const tasksSlice = createSlice({
         setDay: (state, action) => {
             if (action.payload) {
                 state.daytext = true
+                state.isFetching = false
+                state.modalIsOpen = false
             }            
         },
         saveTask: (state) => {
@@ -97,6 +90,7 @@ export const tasksSlice = createSlice({
             } else {
                 state.modalIsOpen = false
             }
+            state.breaks = state.breaks + 1
             state.isFetching = false
         },
         setCurrentTask: (state, action) => {
@@ -131,6 +125,8 @@ export const tasksSlice = createSlice({
         },
         changeCurrentTask: (state, action) => {
             state.currentTask = { ...state.currentTask, [action.payload.type]: action.payload.value }
+            const newTasks = state.tasks.map(task => task.id === state.currentTask.id ? {...task, [action.payload.type]: action.payload.value} : task)
+            state.tasks = newTasks
         },
         addSubtask: (state, action) => {
             state.tasks = [...state.tasks, action.payload]
@@ -155,7 +151,12 @@ export const tasksSlice = createSlice({
             state.error = action.payload  
             state.isFetching = false        
         },
-        
+        resetBreaks: (state, action) => {
+            state.breaks = 0
+        },
+        setFocus: (state, action) => {
+            state.focus = action.payload
+        },
     },
 });
 
@@ -173,14 +174,10 @@ export const { toggleFetching,
     setDay,
     setTask,
     setGoals,
-    setError
-    // setPlan,
-    // upTask,
-    // setCurrentDay, setCurrentPlan,
-    // setSearch,
-    // changePlan,    
+    setError,
+    resetBreaks,
+    setFocus,
 } = tasksSlice.actions;
-
 
 
 export const selectTasks = state => state

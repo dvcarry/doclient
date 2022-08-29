@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import moment from 'moment';
 
-import { setCurrentTask, setModal } from '../../redux/taskReducer';
+import { setCurrentTask, setModal, setFocus } from '../../redux/taskReducer';
 import { Do } from '../Do/Do';
 import { Action } from '../Action/Action';
 import { TASK_TYPES } from '../../config/domain';
@@ -16,6 +17,10 @@ export const Task = ({ value, type }) => {
     const clickHandler = () => {
         dispatch(setModal({ typeOfModal: 'task' }))
         dispatch(setCurrentTask(value))
+    }
+
+    const focusHandler = () => {
+        dispatch(setFocus(value.id))
     }
 
     let taskClasses = ['task']
@@ -51,13 +56,15 @@ export const Task = ({ value, type }) => {
     //     periodClasses.push('importantTag')
     // }
 
+    const daysBetweenFromToday = moment().diff(moment(value.date, 'YYYY-MM-DD'), 'days')
+
     return (
         <div
             className={taskClasses.join(' ')}
         >
             <div className='task_left'>
                 <div className='task_tools'>
-                    <Action important={value.important} date={value.date} />
+                    <Action important={value.important || value.goal} date={value.date} />
                     <Do task={value} />
                 </div>
                 <div
@@ -81,7 +88,12 @@ export const Task = ({ value, type }) => {
                 </div>
             </div>
             <div className='task_right'>
-                <span className='task_tag'>{value.balance}</span>
+                <span className={!!daysBetweenFromToday ? 'task_tag task-overdue': 'task_tag'}>{!!daysBetweenFromToday && daysBetweenFromToday}</span>
+                {/* <span className='task_tag'>{value.balance}</span> */}
+                {
+                    type === 'today' && <span className='task_tag task-focus' onClick={focusHandler}>фокус</span> 
+                }
+                {/* <span className='task_tag'>{value.balance}</span> */}
             </div>
         </div>
     )

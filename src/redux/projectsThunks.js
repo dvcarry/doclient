@@ -1,4 +1,4 @@
-import { setError, setProjects, toggleFetching, setProject } from "./taskReducer"
+import { setError, setProjects, toggleFetching, setProject, closeModal, deleteProject } from "./taskReducer"
 import axios from '../config/axios'
 
 export const getProjectsThunk = () => async dispatch => {
@@ -24,7 +24,10 @@ export const getProjectThunk = (project_id) => async dispatch => {
 export const deleteProjectThunk = (project_id) => async dispatch => {
     try {
         dispatch(toggleFetching())
-        const { data } = await axios.delete('projects/' + project_id)
+        const { data } = await axios.delete('tasks/' + project_id)
+        dispatch(deleteProject(project_id))
+        dispatch(closeModal())
+        dispatch(toggleFetching())
         // dispatch(setProject(data))
     } catch (error) {
         dispatch(setError(error.response.statusText))

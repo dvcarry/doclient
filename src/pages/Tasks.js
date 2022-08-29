@@ -1,37 +1,47 @@
 import { useSelector } from 'react-redux';
 
+
 import { selectTasks } from '../redux/taskReducer';
 import { Task } from '../components/Task/Task';
 import { TASK_TYPES } from '../config/domain';
 import { filterTodayTasks, getDatesForPeriod } from '../config/helpers';
+import { Breaks } from '../components/Breaks/Breaks';
 
 
 
 export const Tasks = () => {
 
-    const { tasks } = useSelector(selectTasks)
+    const { tasks, breaks } = useSelector(selectTasks)
 
     const dates = getDatesForPeriod(14)
 
     const todayTasks = filterTodayTasks(tasks)
-    const inboxTasks = tasks.filter(task => !task.date)
-    const otherTasks = tasks.filter(task => task.date && task.plan !== 'today')
+    const inboxTasks = tasks.filter(task => !task.date && !task.parent)
+    const otherTasks = tasks.filter(task => task.date)
 
     return (
         <>
-            <div className='block'>
-                <h3>Инбокс</h3>
-                {
-                    inboxTasks.map((task, index) => (
-                        <Task
-                            key={task.id}
-                            index={index}
-                            value={task}
-                            type={TASK_TYPES.plan}
-                        />
-                    ))
-                }
-            </div>
+            {
+                breaks > 0 && <Breaks breaks={breaks} />
+            }
+            {
+                inboxTasks.length > 0 ?
+                    <div className='block'>
+                        <h3>Инбокс</h3>
+                        {
+                            inboxTasks.map((task, index) => (
+                                <Task
+                                    key={task.id}
+                                    index={index}
+                                    value={task}
+                                    type={TASK_TYPES.plan}
+                                />
+                            ))
+                        }
+                    </div>
+                    : null
+            }
+
             <div className='block'>
                 <h3>СЕГОДНЯ</h3>
                 {

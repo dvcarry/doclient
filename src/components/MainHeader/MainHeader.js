@@ -22,10 +22,9 @@ export const MainHeader = () => {
                 <NavLink className='mainheader_item' to='/goals'>Цели</NavLink>
                 <NavLink className='mainheader_item' to='/projects'>Проекты</NavLink>
                 <NavLink className='mainheader_item' to='/tasks'>Общее планирование</NavLink>
-                <NavLink className='mainheader_item' to='/today'>Планирование дня</NavLink>
-                <NavLink className='mainheader_item' to='/do'>Выполнение</NavLink>
+                <NavLink className='mainheader_item' to='/today'>Выполнение</NavLink>
                 {
-                    daytext ? null : <span onClick={openDayModal}>Вступительное слово</span>
+                    daytext ? null : <span onClick={openDayModal} className='dayinform'>Вступительное слово</span>
                 }
                 <span></span>
             </div>

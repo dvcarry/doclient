@@ -119,3 +119,16 @@
     box-shadow: none;
     border: 1px solid lightgray;
 }
+
+.task-overdue {
+    color: #f06c34;
+    font-weight: 700;
+}
+
+.task-focus {
+    color: white;
+}
+
+.task-focus:hover {
+    color: #f06c34;
+}
