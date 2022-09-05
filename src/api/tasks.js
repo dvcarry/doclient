@@ -2,8 +2,8 @@ import axios from 'axios'
 import { setError } from '../redux/taskReducer';
 import { getAuthToken } from '../config/helpers';
 
-// axios.defaults.baseURL = 'http://82.146.40.11:5002/api/';
-axios.defaults.baseURL = 'http://localhost:5002/api/';
+axios.defaults.baseURL = 'http://82.146.40.11:5002/api/';
+// axios.defaults.baseURL = 'http://localhost:5002/api/';
 axios.defaults.headers.common = { 'Authorization': `Bearer ${getAuthToken()}` }
 
 // const authInterceptor = ({ dispatch }) => (next) => (action) => {
