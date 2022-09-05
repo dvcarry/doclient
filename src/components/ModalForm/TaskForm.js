@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { ParentTask } from '../ParentTask/ParentTask';
 import { Do } from '../Do/Do';
-import { changeCurrentTask, selectTasks } from '../../redux/taskReducer';
-import { deleteTaskThunk, saveTaskThunk } from '../../redux/tasksThunks';
+import { changeCurrentTask, selectTasks, setProject } from '../../redux/taskReducer';
+import { deleteTaskThunk, saveTaskThunk, changeToProjectThunk } from '../../redux/tasksThunks';
 import { getDateFromConstant } from '../../config/helpers';
 import { DATE_CONSTANTS } from '../../config/domain';
 
@@ -18,7 +18,7 @@ import './ModalForm.css'
 export const TaskForm = () => {
 
     const { Option } = Select;
-    const { currentTask, isFetching } = useSelector(selectTasks)
+    const { currentTask, isFetching  } = useSelector(selectTasks)
 
     const dispatch = useDispatch()
 
@@ -33,7 +33,10 @@ export const TaskForm = () => {
         } else {
             dispatch(changeCurrentTask({ type, value }))
         }
+    }
 
+    const changeToProject = () => {
+        dispatch(changeToProjectThunk(currentTask.id))
     }
 
     const handleChangeDate = (date, dateString) => {
@@ -107,7 +110,8 @@ export const TaskForm = () => {
                         <div className='input_block'>
                             <div className='input_div'>
                                 <div>Тип задачи</div>
-                                <Radio.Group onChange={value => handleChangeData(value, 'type')} value={currentTask.type}>
+                                <Radio.Group onChange={changeToProject} value={currentTask.type}>
+                                {/* <Radio.Group onChange={value => handleChangeData(value, 'type')} value={currentTask.type}> */}
                                     <Radio value={"задача"}>задача</Radio>
                                     <Radio value={"проект"}>проект</Radio>
                                 </Radio.Group>

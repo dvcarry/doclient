@@ -33,3 +33,4 @@ export const deleteProjectThunk = (project_id) => async dispatch => {
         dispatch(setError(error.response.statusText))
     }
 }
+

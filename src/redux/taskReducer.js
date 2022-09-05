@@ -41,10 +41,10 @@ export const tasksSlice = createSlice({
                 state.daytext = true
                 state.isFetching = false
                 state.modalIsOpen = false
-            }            
+            }
         },
         saveTask: (state) => {
-            const newTasks = state.tasks.map(task => task.id === state.currentTask.id ? ({...state.currentTask}) : task)
+            const newTasks = state.tasks.map(task => task.id === state.currentTask.id ? ({ ...state.currentTask }) : task)
             state.tasks = newTasks
             state.isFetching = false
             state.modalIsOpen = false
@@ -113,19 +113,37 @@ export const tasksSlice = createSlice({
             state.currentTask = action.payload
             state.isFetching = false
         },
+        changeToProject: (state, action) => {
+            state.modalIsOpen = true
+            state.typeOfModal = MODAL_TYPES.project
+            state.currentTask = action.payload
+            const newTasks = state.tasks.filter(task => task.id !== action.payload.id)
+            state.tasks = newTasks
+            const newProjects = [...state.projects, action.payload]
+            state.projects = newProjects
+            state.isFetching = false
+        },
         setTask: (state, action) => {
             state.modalIsOpen = true
             state.typeOfModal = MODAL_TYPES.task
             state.currentTask = action.payload
             state.isFetching = false
         },
-        
+        changeTask: (state, action) => {
+            const newTasks = state.tasks.map(task => task.id === action.payload.id ? {...task, ...action.payload} : task)
+            state.tasks = newTasks
+            if (action.payload.donedate) {
+                const newDoneTasks = state.doneTasks.filter(task => task.id !== action.payload.id)
+                state.doneTasks = newDoneTasks
+            }
+            state.isFetching = false
+        },
         closeModal: state => {
             state.modalIsOpen = false
         },
         changeCurrentTask: (state, action) => {
             state.currentTask = { ...state.currentTask, [action.payload.type]: action.payload.value }
-            const newTasks = state.tasks.map(task => task.id === state.currentTask.id ? {...task, [action.payload.type]: action.payload.value} : task)
+            const newTasks = state.tasks.map(task => task.id === state.currentTask.id ? { ...task, [action.payload.type]: action.payload.value } : task)
             state.tasks = newTasks
         },
         addSubtask: (state, action) => {
@@ -144,12 +162,12 @@ export const tasksSlice = createSlice({
             state.search = action.payload
         },
         setGoals: (state, action) => {
-            state.goals = action.payload  
-            state.isFetching = false        
+            state.goals = action.payload
+            state.isFetching = false
         },
         setError: (state, action) => {
-            state.error = action.payload  
-            state.isFetching = false        
+            state.error = action.payload
+            state.isFetching = false
         },
         resetBreaks: (state, action) => {
             state.breaks = 0
@@ -164,7 +182,7 @@ export const tasksSlice = createSlice({
 // actions
 
 export const { toggleFetching,
-    setTasks, addTask, deleteTask, saveTask, doTask,
+    setTasks, addTask, deleteTask, saveTask, doTask, changeToProject,
     setPlanTasks, setTodayTasks, setDoneTasks,
     setProjects, deleteProject, setProject,
     setCurrentTask, changeCurrentTask,
@@ -172,7 +190,7 @@ export const { toggleFetching,
     openNewTask,
     setModal, closeModal,
     setDay,
-    setTask,
+    setTask, changeTask,
     setGoals,
     setError,
     resetBreaks,

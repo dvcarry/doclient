@@ -8,6 +8,7 @@ import { Action } from '../Action/Action';
 import { TASK_TYPES } from '../../config/domain';
 
 import './index.css'
+import { changeSomeTaskThunk } from '../../redux/tasksThunks';
 
 
 export const Task = ({ value, type }) => {
@@ -17,6 +18,11 @@ export const Task = ({ value, type }) => {
     const clickHandler = () => {
         dispatch(setModal({ typeOfModal: 'task' }))
         dispatch(setCurrentTask(value))
+    }
+
+    const makeYesterdayHandler = () => {
+        const newDate = moment(value.donedate, 'YYYY-MM-DD').subtract(1, 'd').format('YYYY-MM-DD')
+        dispatch(changeSomeTaskThunk(value.id, { donedate: newDate }))
     }
 
     const focusHandler = () => {
@@ -88,10 +94,13 @@ export const Task = ({ value, type }) => {
                 </div>
             </div>
             <div className='task_right'>
-                <span className={!!daysBetweenFromToday ? 'task_tag task-overdue': 'task_tag'}>{!!daysBetweenFromToday && daysBetweenFromToday}</span>
+                <span className={!!daysBetweenFromToday ? 'task_tag task-overdue' : 'task_tag'}>{!!daysBetweenFromToday && daysBetweenFromToday}</span>
                 {/* <span className='task_tag'>{value.balance}</span> */}
                 {
-                    type === 'today' && <span className='task_tag task-focus' onClick={focusHandler}>фокус</span> 
+                    type === 'today' && <span className='task_tag task-focus' onClick={focusHandler}>фокус</span>
+                }
+                {
+                    type === 'done' && <span className='task_tag task-focus' onClick={makeYesterdayHandler}>вчера</span>
                 }
                 {/* <span className='task_tag'>{value.balance}</span> */}
             </div>

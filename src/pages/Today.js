@@ -1,22 +1,36 @@
+import { useState } from 'react';
 import 'moment/locale/ru';
 import { Alert } from 'antd';
+import { useSelector } from 'react-redux';
 
 import { Task } from '../components/Task/Task';
-import { useSelector } from 'react-redux';
 import { selectTasks } from '../redux/taskReducer';
 import { filterTodayTasks } from '../config/helpers';
 import { TASK_TYPES } from '../config/domain';
 import { Breaks } from '../components/Breaks/Breaks';
+import { BALANCE } from '../config/domain';
 
 
+const ALL = 'все'
 
 export const Today = () => {
 
+    const [filter, setFilter] = useState(ALL)
     const { tasks, doneTasks, focus, breaks } = useSelector(selectTasks)
 
     const todaytasks = filterTodayTasks(tasks)
-
     const focusTask = todaytasks.find((task) => task.id === focus)
+
+    const navClickHandler = event => {
+        setFilter(event.target.textContent.toLowerCase())
+    }
+
+    const filteredBalance = [...new Set(todaytasks.map(task => task.balance))]
+    const balance = [ALL, ...filteredBalance]
+
+    const filteredTasks = filter === ALL ? todaytasks : todaytasks.filter(task => task.balance === filter)
+    const filteredDoneTasks = filter === ALL ? doneTasks : doneTasks.filter(task => task.balance === filter)
+
 
     return (
         <div>
@@ -34,15 +48,28 @@ export const Today = () => {
                     : <div className='block'>
                         <Alert
                             message="Выбери фокусную задачу"
-                            type="warning"
+                            type="info"
                             showIcon
                         />
                     </div>
             }
             <div className='block'>
-                <h3>СЕГОДНЯ</h3>
                 {
-                    todaytasks.map((task, index) => (
+                    // [ALL, ...BALANCE].map(item => (
+                    balance.map(item => (
+                        <span
+                            className={`nav${filter === item ? ' nav-active' : ''}`}
+                            onClick={navClickHandler}
+                            key={item}
+                        >
+                            {item.toUpperCase()}
+                        </span>)
+                    )
+                }
+            </div>
+            <div className='block'>
+                {
+                    filteredTasks.map((task, index) => (
                         <Task
                             key={task.id}
                             index={index}
@@ -53,7 +80,7 @@ export const Today = () => {
                 }
             </div>
             {
-                doneTasks.length > 0
+                filteredDoneTasks.length > 0
                     ? <div className='block'>
                         <h3>ВЫПОЛНЕНО</h3>
                         {
