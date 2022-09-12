@@ -33,6 +33,7 @@ export const filterTodayTasks = tasks => {
     const today = new Date()
     return tasks
         .filter(task => moment(task.date) <= today)
+        .sort(task => task.wait ? 1 : -1)
         .sort(task => task.important ? -1 : 1)
         .sort(task => task.goal ? -1 : 1)
 }

@@ -1,4 +1,4 @@
-import { saveTask, toggleFetching, deleteTask, changeToProject, setProject, closeModal, setError, setTasks, setTask, setDoneTasks, addTask, addSubtask, doTask, changeTask } from "./taskReducer"
+import { saveTask, toggleFetching, deleteTask, changeCurrentTask, changeToProject, setProject, closeModal, setError, setTasks, setTask, setDoneTasks, addTask, addSubtask, doTask, changeTask } from "./taskReducer"
 import axios from '../config/axios'
 
 
@@ -142,6 +142,17 @@ export const changeSomeTaskThunk = (task_id, data) => async dispatch => {
         const dateWithId = { id: task_id, ...data }
         await axios.put('tasks/one', dateWithId)
         dispatch(changeTask(dateWithId))
+    } catch (error) {
+        dispatch(setError(error.response.statusText))
+    }
+}
+
+export const changeCurrentTaskThunk = (task_id, data) => async dispatch => {
+    try {
+        dispatch(toggleFetching())
+        const changedData = { id: task_id, ...data }
+        await axios.put('tasks/one', changedData)
+        dispatch(changeCurrentTask(data))
     } catch (error) {
         dispatch(setError(error.response.statusText))
     }

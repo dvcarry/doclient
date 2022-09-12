@@ -142,9 +142,12 @@ export const tasksSlice = createSlice({
             state.modalIsOpen = false
         },
         changeCurrentTask: (state, action) => {
-            state.currentTask = { ...state.currentTask, [action.payload.type]: action.payload.value }
-            const newTasks = state.tasks.map(task => task.id === state.currentTask.id ? { ...task, [action.payload.type]: action.payload.value } : task)
+            state.currentTask = { ...state.currentTask, ...action.payload }
+            // state.currentTask = { ...state.currentTask, [action.payload.type]: action.payload.value }
+            const newTasks = state.tasks.map(task => task.id === state.currentTask.id ? { ...task, ...action.payload } : task)
+            // const newTasks = state.tasks.map(task => task.id === state.currentTask.id ? { ...task, [action.payload.type]: action.payload.value } : task)
             state.tasks = newTasks
+            state.isFetching = false
         },
         addSubtask: (state, action) => {
             state.tasks = [...state.tasks, action.payload]

@@ -76,6 +76,16 @@ export const ModalEdit = () => {
 
     const parentTasks = tasks.find(task => task.id === currentTask.child)
 
+    const TaskTypeForm = (
+        <>
+            <ParentTask
+                name={currentTask.parentname}
+                id={currentTask.parentid}
+            />
+
+        </>
+    )
+
 
     return (
         <div>
@@ -107,7 +117,7 @@ export const ModalEdit = () => {
                 </div>
 
                 <div className='input_div'>
-                    <div>Сфера жизни</div>
+                    <div>Сфера жизнии</div>
                     <Select
                         onChange={value => handleChangeType(value, 'balance')}
                         value={currentTask.balance}

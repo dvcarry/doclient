@@ -70,7 +70,11 @@ export const Task = ({ value, type }) => {
         >
             <div className='task_left'>
                 <div className='task_tools'>
-                    <Action important={value.important || value.goal} date={value.date} />
+                    <Action
+                        important={value.important || value.goal}
+                        date={value.date}
+                        wait={value.wait}
+                    />
                     <Do task={value} />
                 </div>
                 <div
