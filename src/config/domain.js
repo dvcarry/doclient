@@ -64,4 +64,5 @@ export const MODAL_TYPES = {
     project: 'project',
     task: 'task',
     day: 'day',
+    failures: 'failures'
 }

@@ -13,7 +13,7 @@ import { Today } from './pages/Today';
 import { Goals } from './pages/Goals';
 
 import { getProjectsThunk } from './redux/projectsThunks';
-import { getTasksThunk, getDoneTasksThunk } from './redux/tasksThunks';
+import { getTasksThunk, getDoneTasksThunk, getFailuresThunk } from './redux/tasksThunks';
 import { getDayThunk } from './redux/daysThunks';
 import { getGoalsThunk } from './redux/goalsThunks';
 
@@ -48,6 +48,7 @@ function App() {
     await dispatch(getDoneTasksThunk())
     await dispatch(getProjectsThunk())
     await dispatch(getGoalsThunk())
+    await dispatch(getFailuresThunk())
   }
 
   useEffect(() => {

@@ -19,7 +19,8 @@ export const tasksSlice = createSlice({
         daytext: false,
         error: '',
         breaks: 0,
-        focus: null
+        focus: null,
+        failures: []
     },
     reducers: {
         toggleFetching: state => {
@@ -178,6 +179,18 @@ export const tasksSlice = createSlice({
         setFocus: (state, action) => {
             state.focus = action.payload
         },
+        setFailures: (state, action) => {
+            state.failures = action.payload
+            state.isFetching = false
+        },
+        doFailures: (state, action) => {
+            const newFailures = state.failures.filter(failure => failure.id !== action.payload)
+            console.log("🚀 ~ file: taskReducer.js ~ line 188 ~ newFaiilures", newFailures)
+            state.failures = newFailures
+            if (newFailures.length === 0) {
+                state.modalIsOpen = false
+            }
+        },
     },
 });
 
@@ -197,6 +210,7 @@ export const { toggleFetching,
     setGoals,
     setError,
     resetBreaks,
+    setFailures, doFailures,
     setFocus,
 } = tasksSlice.actions;
 

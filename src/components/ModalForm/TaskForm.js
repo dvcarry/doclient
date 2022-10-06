@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { ParentTask } from '../ParentTask/ParentTask';
 import { Do } from '../Do/Do';
+import { InputName } from '../../components/InputName/InputName';
 import { changeCurrentTask, selectTasks, setProject } from '../../redux/taskReducer';
 import { deleteTaskThunk, saveTaskThunk, changeToProjectThunk, changeCurrentTaskThunk } from '../../redux/tasksThunks';
 import { getDateFromConstant } from '../../config/helpers';
@@ -22,10 +23,12 @@ export const TaskForm = () => {
 
     const dispatch = useDispatch()
 
-    const handleChangeName = e => {
-        changeCurrentTask('name', e.target.value)
-        dispatch(changeCurrentTask({ type: 'name', value: e.target.value }))
-    }
+    // const handleChangeName = (e, type) => {
+    //     console.log("🚀 ~ file: TaskForm.js ~ line 29 ~ handleChangeName ~ e", e, type)
+    //     dispatch(changeCurrentTaskThunk(currentTask.id, { name: e.target.value }))
+    //     // changeCurrentTask('name', e.target.value)
+    //     // dispatch(changeCurrentTask({ type: 'name', value: e.target.value }))
+    // }
 
     const handleChangeData = (value, type) => {
         console.log("🚀 ~ file: TaskForm.js ~ line 31 ~ handleChangeData ~ type", value)
@@ -43,7 +46,8 @@ export const TaskForm = () => {
     }
 
     const handleChangeDate = (date, dateString) => {
-        dispatch(changeCurrentTask({ type: 'date', value: dateString }))
+        // dispatch(changeCurrentTask({ type: 'date', value: dateString }))
+        dispatch(changeCurrentTaskThunk(currentTask.id, { date: dateString }))
     }
 
     const setDateFromConstants = (dateConstant) => {
@@ -149,25 +153,25 @@ export const TaskForm = () => {
     )
 
 
-
-
     return (
         <div>
             <ParentTask
                 name={currentTask.parentname}
-                id={currentTask.parentid}
+                parent={currentTask.parentid}
+                id={currentTask.id}
             />
             <div>
                 <div className='flex'>
                     <Do task={currentTask} />
-                    <TextareaAutosize
+                    {/* <TextareaAutosize
                         className='inputtext inputtext-name'
                         value={currentTask.name}
                         onChange={handleChangeName}
-                    />
+                    /> */}
+                    <InputName />
                 </div>
             </div>
-            {currentTask.date ? PlannedTask : NotPlannedTask}
+            {currentTask.parentid ? PlannedTask : NotPlannedTask}
 
 
 

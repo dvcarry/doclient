@@ -6,12 +6,13 @@ import { Task } from '../components/Task/Task';
 import { TASK_TYPES } from '../config/domain';
 import { filterTodayTasks, getDatesForPeriod } from '../config/helpers';
 import { Breaks } from '../components/Breaks/Breaks';
+import { Alerts } from '../components/Alerts/Alerts';
 
 
 
 export const Tasks = () => {
 
-    const { tasks, breaks } = useSelector(selectTasks)
+    const { tasks, breaks, failures } = useSelector(selectTasks)
 
     const dates = getDatesForPeriod(14)
 
@@ -24,6 +25,7 @@ export const Tasks = () => {
             {
                 breaks > 0 && <Breaks breaks={breaks} />
             }
+            <Alerts />
             {
                 inboxTasks.length > 0 ?
                     <div className='block'>
@@ -41,6 +43,7 @@ export const Tasks = () => {
                     </div>
                     : null
             }
+            
 
             <div className='block'>
                 <h3>СЕГОДНЯ</h3>

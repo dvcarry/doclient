@@ -6,3 +6,7 @@
 .parenttask:hover {
     color: #f06c34;
 }
+
+.parenttask a {
+    margin-right: 10px;;
+}

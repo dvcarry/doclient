@@ -4,10 +4,14 @@ import { Select } from 'antd';
 
 import { selectTasks, changeCurrentTask } from '../../redux/taskReducer';
 import { getProjectsThunk, getProjectThunk } from '../../redux/projectsThunks';
+import { addToProjectThunk, changeToProjectThunk } from '../../redux/tasksThunks';
+
 import './ParentTask.css'
 
+const { Option } = Select;
 
-export const ParentTask = ({ id, name }) => {
+
+export const ParentTask = ({ parent, name, id }) => {
 
     const [isParent, setIsParent] = useState(false)
     const { projects, isFetching } = useSelector(selectTasks)
@@ -22,6 +26,7 @@ export const ParentTask = ({ id, name }) => {
     }
 
     const handleChangeType = (value, values) => {
+        dispatch(addToProjectThunk(id, value))
         // dispatch(changeCurrentTask({ type: 'parentid', value: values.value }))
         dispatch(changeCurrentTask({ type: 'parent', value: values.value }))
         dispatch(changeCurrentTask({ type: 'parentname', value: values.children }))
@@ -31,10 +36,12 @@ export const ParentTask = ({ id, name }) => {
     }
 
     const clickHandler = () => {
-        dispatch(getProjectThunk(id))
+        dispatch(getProjectThunk(parent))
     }
-
-    const { Option } = Select;
+    
+    const changeToProject = () => {
+        dispatch(changeToProjectThunk(id))
+    }
 
     if (isParent) {
         return (
@@ -55,14 +62,14 @@ export const ParentTask = ({ id, name }) => {
         )
     }
 
-
     if (!name) {
         return (
-            <a
-                onClick={startChooseParent}
-            >
-                Добавить родителя
-            </a>)
+            <div
+            className='parenttask'>
+                <a onClick={startChooseParent}>Добавить родителя</a>
+                <a onClick={changeToProject}>Сделать проектом</a>
+            </div>
+        )
     }
 
     return (
@@ -70,30 +77,9 @@ export const ParentTask = ({ id, name }) => {
             <div
                 className='parenttask'
                 onClick={clickHandler}
-
             >
                 {name}
             </div>
         </>
     )
-}
-// export const ParentTask = ({ task }) => {
-
-//     const dispacth = useDispatch()
-
-//     const clickHandler = () => {
-//         dispacth(setModal({typeOfModal: 'edit', currentTask: task}))
-//     }
-
-//     return (
-//         <>
-//             <div
-//                 className='parenttask'
-//                 onClick={clickHandler}
-
-//             >
-//                 {task.name}
-//             </div>
-//         </>
-//     )
-// }
+};

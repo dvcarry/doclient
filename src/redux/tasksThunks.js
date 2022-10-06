@@ -1,7 +1,5 @@
-import { saveTask, toggleFetching, deleteTask, changeCurrentTask, changeToProject, setProject, closeModal, setError, setTasks, setTask, setDoneTasks, addTask, addSubtask, doTask, changeTask } from "./taskReducer"
+import { saveTask, toggleFetching, deleteTask, setFailures, doFailures, changeCurrentTask, changeToProject, setProject, closeModal, setError, setTasks, setTask, setDoneTasks, addTask, addSubtask, doTask, changeTask } from "./taskReducer"
 import axios from '../config/axios'
-
-
 
 export const getTasksThunk = () => async dispatch => {
     try {
@@ -11,7 +9,7 @@ export const getTasksThunk = () => async dispatch => {
     } catch (error) {
         dispatch(setError(error.response.statusText))
     }
-}
+};
 
 export const getTaskThunk = (id) => async dispatch => {
     try {
@@ -21,7 +19,7 @@ export const getTaskThunk = (id) => async dispatch => {
     } catch (error) {
         dispatch(setError(error.response.statusText))
     }
-}
+};
 
 export const getDoneTasksThunk = () => async dispatch => {
     try {
@@ -31,11 +29,10 @@ export const getDoneTasksThunk = () => async dispatch => {
     } catch (error) {
         dispatch(setError(error.response.statusText))
     }
-}
+};
 
 
 export const saveTaskThunk = (task) => async dispatch => {
-
     try {
         dispatch(toggleFetching())
         await axios.put('tasks', task)
@@ -43,18 +40,10 @@ export const saveTaskThunk = (task) => async dispatch => {
     } catch (error) {
         dispatch(setError(error.response.statusText))
     }
-
-
-    // dispatch(toggleFetching())
-    // API.editTask(task)
-    //     .then(response => {
-    //         dispatch(saveTask())
-    //     })
-}
+};
 
 
 export const addTaskThunk = (newTask) => async dispatch => {
-
     try {
         dispatch(toggleFetching())
         const { data } = await axios.post('tasks', newTask)
@@ -62,20 +51,9 @@ export const addTaskThunk = (newTask) => async dispatch => {
     } catch (error) {
         dispatch(setError(error.response.statusText))
     }
-
-
-
-    // dispatch(toggleFetching())
-    // API.addTask(newTask)
-    //     .then(response => {
-    //         dispatch(addTask(response))
-    //         dispatch(toggleFetching())
-    //         dispatch(closeModal())
-    //     })
-}
+};
 
 export const doTaskThunk = (id) => async dispatch => {
-
     try {
         dispatch(toggleFetching())
         const { data } = await axios.post('tasks/do', { id })
@@ -83,16 +61,7 @@ export const doTaskThunk = (id) => async dispatch => {
     } catch (error) {
         dispatch(setError(error.response.statusText))
     }
-
-
-    // dispatch(toggleFetching())
-    // API.do(id)
-    //     .then(response => {
-    //         dispatch(doTask({ id, parent: response }))
-    //         dispatch(toggleFetching())
-    //         // dispatch(closeModal())
-    //     })
-}
+};
 
 
 export const deleteTaskThunk = (task_id, parent) => async dispatch => {
@@ -112,19 +81,7 @@ export const deleteTaskThunk = (task_id, parent) => async dispatch => {
     } catch (error) {
         dispatch(setError(error.response.statusText))
     }
-
-
-    // dispatch(toggleFetching())
-    // await API.deleteTask(task_id)
-    // dispatch(deleteTask(task_id))
-    // if (parent) {
-    //     const project = await API.project.getProject(parent)
-    //     dispatch(setProject(project))
-    // } else {
-    //     dispatch(closeModal())
-    //     dispatch(toggleFetching())
-    // }
-}
+};
 
 export const changeToProjectThunk = (task_id) => async dispatch => {
     try {
@@ -134,7 +91,17 @@ export const changeToProjectThunk = (task_id) => async dispatch => {
     } catch (error) {
         dispatch(setError(error.response.statusText))
     }
-}
+};
+
+export const addToProjectThunk = (id, parent) => async dispatch => {
+    try {
+        dispatch(toggleFetching())
+        const { data } = await axios.put('tasks/addtoproject', { id, parent })
+        // dispatch(changeToProject(data))
+    } catch (error) {
+        dispatch(setError(error.response.statusText))
+    }
+};
 
 export const changeSomeTaskThunk = (task_id, data) => async dispatch => {
     try {
@@ -145,7 +112,7 @@ export const changeSomeTaskThunk = (task_id, data) => async dispatch => {
     } catch (error) {
         dispatch(setError(error.response.statusText))
     }
-}
+};
 
 export const changeCurrentTaskThunk = (task_id, data) => async dispatch => {
     try {
@@ -156,7 +123,7 @@ export const changeCurrentTaskThunk = (task_id, data) => async dispatch => {
     } catch (error) {
         dispatch(setError(error.response.statusText))
     }
-}
+};
 
 export const addSubtaskThunk = (newTask) => async dispatch => {
 
@@ -167,13 +134,27 @@ export const addSubtaskThunk = (newTask) => async dispatch => {
     } catch (error) {
         dispatch(setError(error.response.statusText))
     }
+};
 
 
+export const getFailuresThunk = () => async dispatch => {
 
-    // dispatch(toggleFetching())
-    // API.addTask(newTask)
-    //     .then(response => {
-    //         dispatch(addSubtask(response))
-    //         dispatch(toggleFetching())
-    //     })
-}
+    try {
+        dispatch(toggleFetching())
+        const { data } = await axios.get('failures')
+        dispatch(setFailures(data))
+    } catch (error) {
+        dispatch(setError(error.response.statusText))
+    }
+};
+
+export const addFailuresThunk = (task_id, description) => async dispatch => {
+
+    try {
+        dispatch(toggleFetching())
+        const { data } = await axios.post('failures', { task_id, description })
+        dispatch(doFailures(task_id))
+    } catch (error) {
+        dispatch(setError(error.response.statusText))
+    }
+};

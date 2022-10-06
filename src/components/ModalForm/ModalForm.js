@@ -9,6 +9,7 @@ import { selectTasks, closeModal } from '../../redux/taskReducer';
 import { ProjectForm } from './ProjectForm';
 import { TaskForm } from './TaskForm';
 import { DayNew } from './DayNew';
+import { FailureForm } from './FailureForm';
 
 const customStyles = {
     content: {
@@ -28,6 +29,7 @@ const modals = {
     task: TaskForm,
     new: ModalNew,
     day: DayNew,
+    failures: FailureForm
 };
 
 
